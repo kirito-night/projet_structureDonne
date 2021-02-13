@@ -2,7 +2,7 @@
 #include<stdlib.h>
 #include<time.h>
 #include "matrice.h"
-int **alloue_matrice(int ** T, int n){
+int **alloue_matrice(int ** T, int n){ //1er version peu efficace car la matrice passer en argument fait une copie qui occupe une place memoire
     T=(int **) malloc(sizeof(int*)*n);
     int i;
     for(i = 0 ; i< n; i++ ){
@@ -11,7 +11,7 @@ int **alloue_matrice(int ** T, int n){
     return T;
 
 }
-void alloue_matrice_2(int *** T, int n){
+void alloue_matrice_2(int *** T, int n){ //2eme version plus efficace en donnant comme argument de la foncition une pointeur de matrice
     *T=(int **) malloc(sizeof(int*)*n);
     int i;
     for(i = 0 ; i< n; i++ ){
@@ -20,6 +20,7 @@ void alloue_matrice_2(int *** T, int n){
     
 
 }
+
 
 void desalloue_matrice(int **T, int n){
     int **tab = T;
@@ -38,6 +39,33 @@ void remplir_matrice(int **T, int n, int V){
         }
     }
 }
+void remplir_matrice_trisup(int **T, int n, int V){
+    int i , j;
+    for(i =0 ; i< n; i++){
+        for(j= 0 ; j < n ; j++){
+            if(i > j){
+                T[i][j] = 0;
+            }else{
+                T[i][j] = rand()%V;
+            }
+            
+        }
+    }
+}
+void remplir_matrice_triinf(int **T, int n, int V){
+    int i , j;
+    for(i =0 ; i< n; i++){
+        for(j= 0 ; j < n ; j++){
+            if(i > j){
+                T[i][j] = rand()%V;
+            }else{
+                T[i][j] = 0;
+            }
+            
+        }
+    }
+}
+
 void afficher_matrice(int **T, int n){
     int i , j;
     for(i =0 ; i< n; i++){
@@ -70,6 +98,7 @@ int all_diff_2(int **Mat, int n , int V){
     for(i=0 ; i< n; i++){
         for(j=0 ; j < n ; j++){
             if(tab[Mat[i][j]]== 1){
+                free(tab);
                 return 0;
             }
             else{
@@ -77,6 +106,7 @@ int all_diff_2(int **Mat, int n , int V){
             }
         }
      }
+     free(tab);
      return 1;
 
 }
@@ -90,6 +120,7 @@ int **produit_matrice(int **mat1, int ** mat2 , int n){
             res[i][j] = 0;
             for(k=0;k<n; k++){
                 res[i][j] += mat1[i][k]  * mat2[k][j];
+                
             }
         }
     }
