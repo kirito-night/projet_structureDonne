@@ -22,6 +22,6 @@ int main(){
         desalloue_matrice(mat,n);
 
     }
-    fclose(f);
+    fclose(f); //c'est un test
     return 0;
 }
