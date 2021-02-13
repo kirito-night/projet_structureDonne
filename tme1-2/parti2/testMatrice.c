@@ -14,8 +14,8 @@ int main(){
         remplir_matrice(mat,n ,V);
         
         temps_initial = clock();
-        all_diff_1(mat,n);
-        //all_diff_2(mat,n,V);
+        //all_diff_1(mat,n);
+        all_diff_2(mat,n,V);
         temps_final = clock();
 
         temps_cpu = ((double)(temps_final -temps_initial));
