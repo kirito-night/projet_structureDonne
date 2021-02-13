@@ -89,7 +89,7 @@ int **produit_matrice(int **mat1, int ** mat2 , int n){
         for(j=0;j<n; j++){
             res[i][j] = 0;
             for(k=0;k<n; k++){
-                res[i][j] += mat1[i][k]  + mat2[k][j];
+                res[i][j] += mat1[i][k]  * mat2[k][j];
             }
         }
     }
@@ -97,6 +97,25 @@ int **produit_matrice(int **mat1, int ** mat2 , int n){
 }
 
 int **produit_matrice_2(int **mat1, int **mat2,int n){
+    int **res = NULL;
+    alloue_matrice_2(&res,n);
+    int i,j;
+    int k, tmp;
+    for(i=0 ; i < n ; i++){
+        for(j=0;j<n; j++){
+            res[i][j] =0;
+            if (i>j){
+                tmp = j;
+            }else {
+                tmp = i;
+            }
+            for (k = 0; k < tmp ; k++){//cette tour de boucle n'est pas de complexite O(n)
+                res[i][j] += mat1[i][k] * mat2[k][i];
+            }
+        }
+    }
+
+    return res;
     
 }
 

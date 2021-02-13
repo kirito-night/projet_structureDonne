@@ -22,4 +22,6 @@ int main(){
         desalloue_matrice(mat,n);
 
     }
+    fclose(f);
+    return 0;
 }
