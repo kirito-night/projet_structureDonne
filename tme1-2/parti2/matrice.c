@@ -150,26 +150,3 @@ int **produit_matrice_2(int **mat1, int **mat2,int n){
     
 }
 
-/*int main(){
-    srand(time(NULL));
-    int n = 500, V = 15;
-    int **mat = NULL; 
-    //mat = alloue_matrice(mat, n);
-    alloue_matrice_2(&mat, n);
-    remplir_matrice(mat,n ,V);
-    afficher_matrice(mat,n);
-    clock_t temps_initial; 
-    clock_t temps_final;
-    double temps_cpu;
-    temps_initial = clock();
-    all_diff_1(mat,n);
-    //all_diff_2(mat,n,V);
-    temps_final = clock();
-
-    temps_cpu = ((double)(temps_final -temps_initial));
-    printf("%d %.2f \n", n, temps_cpu);
-
-    desalloue_matrice(mat,n);
-  
-    return 0;
-}*/
