@@ -140,7 +140,7 @@ int **produit_matrice_2(int **mat1, int **mat2,int n){
             }else {
                 tmp = i;
             }
-            for (k = 0; k < tmp ; k++){//cette tour de boucle n'est pas de complexite O(n)
+            for (k = 0; k < tmp ; k++){//cette tour de boucle n'est pas de complexite O(n) mais de O(1)
                 res[i][j] += mat1[i][k] * mat2[k][i];
             }
         }
