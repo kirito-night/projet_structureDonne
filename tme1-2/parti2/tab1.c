@@ -58,29 +58,3 @@ int sum_carre_2(int *tab, int n){
 }
 
 
-/*int main(){
-    srand(time(NULL));
-    int n = 10;
-    int *tab;
-    alloue_tableau(&tab, 10);
-    remplir_tableau(&tab,n,10);
-    afficher_tableau(tab,n);
-    clock_t temps_initial; 
-    clock_t temps_final;
-    double temps_cpu;
-
-    temps_initial = clock();
-    int i =sum_carre_1(tab,n);
-    //int j = sum_carre_2(tab,n);
-    temps_final = clock();
-
-    temps_cpu = ((double)(temps_final -temps_initial));
-    printf("%d  \n", i);
-    //  printf("%d  \n", j);
-    printf("%d %f \n", n, temps_cpu);
-    //FILE *f = fopen("sortie_","w");
-
-
-    desalloue_tableau(tab);
-    return 0;
-}*/
