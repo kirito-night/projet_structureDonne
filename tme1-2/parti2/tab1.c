@@ -6,6 +6,10 @@
 //2.1
 void alloue_tableau(int ** T, int n){
     *T = (int*)malloc(n *sizeof(int));
+    if(*T == NULL){
+        printf("erreur d'allocation dynamique");
+        exit(1);
+    }
 }
 /* nous avons choisi cette version car l'autre version va creer un copie 
 du tableau passer en argument et de renvoyer le resultat, qui est bcp plus couteux 
@@ -29,7 +33,7 @@ void remplir_tableau(int **T, int n, int V){
 void afficher_tableau(int *T, int n){
     int i;
     for(i = 0 ; i < n; i++){
-        printf(" %d \n", T[i]);
+        printf(" %d \n", T[i]); //afficher les valeur du tableau passer en argument
     }
 }
 

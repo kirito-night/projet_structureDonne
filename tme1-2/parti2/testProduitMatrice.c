@@ -7,6 +7,10 @@ int main(){
 
     
     FILE *f = fopen("sortie_vitesse.txt", "w");
+    if(f == NULL){
+        printf("erreur d'ouverture de fichier");
+        exit(1);
+    }
     printf("fichier est ouvert\n");
     for(n = 1 ; n < NB ; n++){
         clock_t temps_initial; 
@@ -16,7 +20,7 @@ int main(){
         alloue_matrice_2(&mat2, n);
         remplir_matrice_trisup(mat1,n ,V);
         remplir_matrice_triinf(mat2,n ,V);
-        temps_initial = clock();
+        temps_initial = clock();//decommentez et commentez cette fonction pour mesurez l'autre fonction 
         //produit_matrice(mat1,mat2,n);
         produit_matrice_2(mat1,mat2, n);
         temps_final = clock();

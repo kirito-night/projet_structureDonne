@@ -4,6 +4,7 @@
 #include "matrice.h"
 int **alloue_matrice(int ** T, int n){ //1er version peu efficace car la matrice passer en argument fait une copie qui occupe une place memoire
     T=(int **) malloc(sizeof(int*)*n);
+    
     int i;
     for(i = 0 ; i< n; i++ ){
          T[i]= (int *)malloc(sizeof(int)*n);
@@ -13,10 +14,20 @@ int **alloue_matrice(int ** T, int n){ //1er version peu efficace car la matrice
 }
 void alloue_matrice_2(int *** T, int n){ //2eme version plus efficace en donnant comme argument de la foncition une pointeur de matrice
     *T=(int **) malloc(sizeof(int*)*n);
+    if(*T == NULL){
+        printf("erreur d'allocation dynamique");
+        exit(1);
+    }
     int i;
     for(i = 0 ; i< n; i++ ){
-         (*T)[i]= (int *)malloc(sizeof(int)*n);
+        (*T)[i]= (int *)malloc(sizeof(int)*n);
+        if(*T == NULL){
+        printf("erreur d'allocation dynamique");
+        free(*T);
+        exit(1);
+        }
     }
+    
     
 
 }

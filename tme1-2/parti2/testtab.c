@@ -24,7 +24,7 @@ int main(){
         temps_initial = clock();
         sum_carre_1(tab,n);
         //sum_carre_2(tab,n);
-        temps_final = clock();
+        temps_final = clock();//decommentez et commentez cette fonction pour mesurez l'autre fonction 
         temps_cpu = ((double)(temps_final -temps_initial));
         fprintf(f,"%d %f \n", n, temps_cpu);
         desalloue_tableau(tab);
@@ -34,6 +34,7 @@ int main(){
 
     }
     fclose(f);
+    printf("fichier est ferme\n");
 
     return 0;
 
