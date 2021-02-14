@@ -8,11 +8,12 @@ int main(){
     srand(time(NULL));
     int n ;
     int *tab =NULL;
-    clock_t temps_initial; 
-    clock_t temps_final;
-    double temps_cpu;
+    
     FILE *f = fopen("sortie_vitesse.txt", "w");
     for(n = 1; n < NB; n++){
+        clock_t temps_initial; 
+        clock_t temps_final;
+        double temps_cpu;
         alloue_tableau(&tab, n);
         remplir_tableau(&tab,n,10);
         temps_initial = clock();
