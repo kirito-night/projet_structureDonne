@@ -10,6 +10,11 @@ int main(){
     int *tab =NULL;
     
     FILE *f = fopen("sortie_vitesse.txt", "w");
+    if(f == NULL){
+        printf("erreur d'ouverture de fichier");
+        exit(1);
+    }
+    printf("fichier est ouvert\n");
     for(n = 1; n < NB; n++){
         clock_t temps_initial; 
         clock_t temps_final;
@@ -29,6 +34,7 @@ int main(){
 
     }
     fclose(f);
+
     return 0;
 
 }
