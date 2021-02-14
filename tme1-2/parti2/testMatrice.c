@@ -15,7 +15,7 @@ int main(){
         
         temps_initial = clock();
         //all_diff_1(mat,n);
-        all_diff_2(mat,n,V);
+        all_diff_2(mat,n,V); //decommentez et commentez cette fonction pour mesurez l'autre fonction 
         temps_final = clock();
 
         temps_cpu = ((double)(temps_final -temps_initial));

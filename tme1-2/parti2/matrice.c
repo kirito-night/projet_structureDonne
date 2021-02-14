@@ -78,6 +78,9 @@ void afficher_matrice(int **T, int n){
 
 int all_diff_1(int **Mat, int n){
     int i, j, k, l; 
+    /*
+        avec 4 boucle, pour chaque element de la matrice nous parcourons la matrice en entier 
+    */
      for(i =0 ; i< n; i++){
         for(j= 0 ; j < n ; j++){
             for(k = 0; k < n ; k++){
@@ -93,6 +96,11 @@ int all_diff_1(int **Mat, int n){
 }
 
 int all_diff_2(int **Mat, int n , int V){
+    /*
+       les valeur de la matrice sont entre 0 et V-1,  avec un tableau entier de V case, si dans la matrice une valeur n apparait 
+       on dit que la n-ieme  case de notre taleau = 1 , et si on voit une case de notre tableau est de 1 c'est a dire la matrcie s'est repete, 
+       on return 0, et si on sort de la boucle et on est tjr dans la fonction, dans ce cas tousles valeurs sont differents on return 1 
+    */
     int *tab = (int *)malloc(sizeof(int)*V);
     int i , j; 
     for(i=0 ; i< n; i++){
@@ -112,6 +120,7 @@ int all_diff_2(int **Mat, int n , int V){
 }
 
 int **produit_matrice(int **mat1, int ** mat2 , int n){
+    /* on fait la produit des matrices en respectant la formule mathematique */
     int **res = NULL;
     alloue_matrice_2(&res,n);
     int i,j,k;
@@ -128,6 +137,9 @@ int **produit_matrice(int **mat1, int ** mat2 , int n){
 }
 
 int **produit_matrice_2(int **mat1, int **mat2,int n){
+    /*P.S les matrices passez en argument sont suppose triangulaire de base, avec mat1 triangulaire superieur et mat2 triangulaire inferieur 
+    et la fonction ne peut que faire le produit d'une matrice triangulaire superieur multiplier par une matrice triangulaire  inferieur */
+    /*avec les matrices triangulaire certain parcours de la  boucle sont inutile donc avec une condition on peut ignonrer */
     int **res = NULL;
     alloue_matrice_2(&res,n);
     int i,j;

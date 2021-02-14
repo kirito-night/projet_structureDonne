@@ -20,7 +20,7 @@ void remplir_tableau(int **T, int n, int V){
     int *tab = *T;
     int i;
     for (i = 0; i< n ; i++){
-        tab[i] = rand()%V;
+        tab[i] = rand()%V; //remplir le tableau  avec une valeur aleatoire entre 0 a V-1
     }
 
 }
