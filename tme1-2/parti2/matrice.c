@@ -3,6 +3,7 @@
 #include<time.h>
 #include "matrice.h"
 int **alloue_matrice(int ** T, int n){ //1er version peu efficace car la matrice passer en argument fait une copie qui occupe une place memoire
+    /* on utilisera donc pas cette fonction pour alloer les matrice*/
     T=(int **) malloc(sizeof(int*)*n);
     
     int i;
@@ -150,7 +151,7 @@ int **produit_matrice(int **mat1, int ** mat2 , int n){
 int **produit_matrice_2(int **mat1, int **mat2,int n){
     /*P.S les matrices passez en argument sont suppose triangulaire de base, avec mat1 triangulaire superieur et mat2 triangulaire inferieur 
     et la fonction ne peut que faire le produit d'une matrice triangulaire superieur multiplier par une matrice triangulaire  inferieur */
-    /*avec les matrices triangulaire certain parcours de la  boucle sont inutile donc avec une condition on peut ignonrer */
+    /*avec les matrices triangulaire certain parcours de la  boucle sont inutile donc avec une condition on peut eviter ces parcours */
     int **res = NULL;
     alloue_matrice_2(&res,n);
     int i,j;
@@ -163,7 +164,7 @@ int **produit_matrice_2(int **mat1, int **mat2,int n){
             }else {
                 tmp = i;
             }
-            for (k = 0; k < tmp ; k++){//cette tour de boucle n'est pas de complexite O(n) mais de O(1)
+            for (k = 0; k < tmp ; k++){
                 res[i][j] += mat1[i][k] * mat2[k][i];
             }
         }
