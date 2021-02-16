@@ -32,8 +32,11 @@ void liberer_biblio(Biblio* b){
 
 void inserer_en_tete(Biblio* b, int num, char* titre, char* auteur){
     Livre* l = creer_livre(num, titre, auteur);
+    l->suiv = b->L;
     b->L = l;
 }
+
+
 
 int main(void){
     return 0;
