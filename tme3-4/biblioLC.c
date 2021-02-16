@@ -27,6 +27,7 @@ Biblio* creer_biblio(){
 }
 
 void liberer_biblio(Biblio* b){
+    
     free(b);
 }
 
