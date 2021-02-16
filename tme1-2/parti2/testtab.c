@@ -22,9 +22,9 @@ int main(){
         alloue_tableau(&tab, n);
         remplir_tableau(&tab,n,10);
         temps_initial = clock();
-        sum_carre_1(tab,n);
-        //sum_carre_2(tab,n);
-        temps_final = clock();//decommentez et commentez cette fonction pour mesurez l'autre fonction 
+        //sum_carre_1(tab,n);
+        sum_carre_2(tab,n);//decommentez et commentez cette fonction pour mesurez l'autre fonction 
+        temps_final = clock();
         temps_cpu = ((double)(temps_final -temps_initial));
         fprintf(f,"%d %f \n", n, temps_cpu);
         desalloue_tableau(tab);

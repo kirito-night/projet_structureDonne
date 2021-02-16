@@ -1,5 +1,5 @@
 #include "matrice.h"
-#define NB 500
+#define NB 100
 int main(){
     int n, V = 10;
     int **mat = NULL;
