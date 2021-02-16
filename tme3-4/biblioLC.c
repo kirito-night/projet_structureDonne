@@ -27,7 +27,12 @@ Biblio* creer_biblio(){
 }
 
 void liberer_biblio(Biblio* b){
-    
+    Livre * l = b->L;
+    while(l){
+        Livre * tmp = l->suiv;
+        free(l);
+        l = tmp;
+    }
     free(b);
 }
 
