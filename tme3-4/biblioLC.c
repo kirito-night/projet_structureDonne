@@ -23,6 +23,7 @@ void liberer_livre(Livre* l){
 
 Biblio* creer_biblio(){
     Biblio* b = (Biblio*) malloc(sizeof(Biblio));
+    b->L =NULL;
     return b;
 }
 
@@ -49,9 +50,36 @@ Livre * recherche_ouvrage_num (Biblio *b, int num){
             return l;
         }
         l= l->suiv;
-    } 
-
+    }
+    printf("livre non trouver");
+    return NULL;
 }
+
+Livre * recherche_ouvrage_titre (Biblio *b, char* titre){
+    Livre * l =b->L;
+    while(l){
+        if(strcmp(l->titre,titre)==0){
+            return l;
+        }
+        l= l->suiv;
+    }
+    printf("livre non trouver");
+    return NULL;
+}
+
+Biblio * recherche_ouvrage_auteur(Biblio *b, char* auteur){
+    Biblio *res = creer_biblio();
+    Livre *l = b->L;
+    while(l){
+        if(strcmp(l->auteur, auteur)== 0){
+            inserer_en_tete(res,l->num, l->titre, l->auteur);
+        }
+        l =  l->suiv;
+    }
+    return res;
+}
+
+
 void afficherLivre(Livre* l){
     printf("Titre : %s, Auteur : %s, Numero : %d\n", l->titre, l->auteur, l->num);
 }
