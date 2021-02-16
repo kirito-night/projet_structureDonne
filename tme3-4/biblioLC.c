@@ -42,6 +42,9 @@ void inserer_en_tete(Biblio* b, int num, char* titre, char* auteur){
     b->L = l;
 }
 
+Livre * recherche_ouvrage_num (Biblio *b){
+
+})
 
 /*
 
