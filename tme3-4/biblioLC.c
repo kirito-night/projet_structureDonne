@@ -42,9 +42,16 @@ void inserer_en_tete(Biblio* b, int num, char* titre, char* auteur){
     b->L = l;
 }
 
-Livre * recherche_ouvrage_num (Biblio *b){
+Livre * recherche_ouvrage_num (Biblio *b, int num){
+    Livre * l =b->L;
+    while(l){
+        if(l->num == num){
+            return l;
+        }
+        l= l->suiv;
+    } 
 
-})
+}
 void afficherLivre(Livre* l){
     printf("Titre : %s, Auteur : %s, Numero : %d\n", l->titre, l->auteur, l->num);
 }
