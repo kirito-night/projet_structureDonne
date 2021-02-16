@@ -7,7 +7,7 @@ typedef struct livre {
     struct livre * suiv ;
 } Livre ;
 
-typedef struct Tete { /* Tete fictive */
+typedef struct{ /* Tete fictive */
     Livre * L ; /* Premier element */
 } Biblio ;
 
