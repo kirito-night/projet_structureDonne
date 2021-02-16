@@ -85,7 +85,7 @@ void afficherLivre(Livre* l){
 }
 
 void afficherBiblio(Biblio* b){
-    Livre* l = b->l;
+    Livre* l = b->L;
     while(l){
         afficherLivre(l);
         l = l->suiv;
