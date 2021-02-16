@@ -30,7 +30,7 @@ void liberer_biblio(Biblio* b){
     Livre * l = b->L;
     while(l){
         Livre * tmp = l->suiv;
-        free(l);
+        liberer_livre(l);
         l = tmp;
     }
     free(b);
@@ -43,7 +43,8 @@ void inserer_en_tete(Biblio* b, int num, char* titre, char* auteur){
 }
 
 
+/*
 
 int main(void){
     return 0;
-}
+}*/
