@@ -42,6 +42,17 @@ void inserer_en_tete(Biblio* b, int num, char* titre, char* auteur){
     b->L = l;
 }
 
+void afficherLivre(Livre* l){
+    printf("Titre : %s, Auteur : %s, Numero : %d\n", l->titre, l->auteur, l->num);
+}
+
+void afficherBiblio(Biblio* b){
+    Livre* l = b->l;
+    while(l){
+        afficherLivre(l);
+        l = l->suiv;
+    }
+}
 
 /*
 
