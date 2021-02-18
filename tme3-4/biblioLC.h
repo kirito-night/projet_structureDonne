@@ -19,8 +19,10 @@ void liberer_biblio(Biblio* b);
 void inserer_en_tete(Biblio* b, int num, char* titre, char* auteur);
 void afficherLivre(Livre* l);
 void afficherBiblio(Biblio* b);
+Biblio * recherche_ouvrage_auteur(Biblio *b, char* auteur);
+Livre * recherche_ouvrage_titre (Biblio *b, char* titre);
+Livre * recherche_ouvrage_num (Biblio *b, int num);
 
-
-
-
+Biblio *suppression_ouvrage(Biblio * b , int num,  char * auteur,  char* titre);
+Biblio *fusion_biblio_2(Biblio *b1, Biblio *b2);
 #endif
