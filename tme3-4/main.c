@@ -53,19 +53,32 @@ int main(int argc, char* argv[]){
             printf(" veuillez entre le num , le titre et l'auteur de l'ouvrage : ");
             //fgets(buffer, 256, stdin);
             //sscanf(buffer, "%d %s %s",&num ,titre, auteur);
-            scanf( "%d %s %s",&num ,titre, auteur);
-            inserer_en_tete(b,num,titre,auteur);
+            if(scanf( "%d %s %s",&num ,titre, auteur) == 3){
+                inserer_en_tete(b,num,titre,auteur);
+                 printf("ajout fait");
+            }
+            else{
+                printf("erreur formatage");
+            }
+            
 
             break;
         case 3 :
             //int num;
             //char titre[100], auteur[100];
             printf(" veuillez entre le num , le titre et l'auteur de l'ouvrage : ");
-            scanf( "%d %s %s",&num ,titre, auteur);
-            printf("%d %s %s\n", num, titre, auteur);
-            suppression_ouvrage(b,num,titre,auteur);
+            if(scanf( "%d %s %s",&num ,titre, auteur) == 3){
+                //printf("%d %s %s\n", num, titre, auteur);
+                suppression_ouvrage(b,num,titre,auteur);
+            }
+            else{
+                printf("erreur formatage");
+            }
+           
             
             break;
+        case 4:
+        case 5:
         default:
             printf("saisie invalide\n");
             break;
