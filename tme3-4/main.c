@@ -31,6 +31,7 @@ int main(int argc, char* argv[]){
 
     do{
         menu();
+        printf("entrer votre choix : ");
         scanf("%d", &rep);
         
         switch (rep){
