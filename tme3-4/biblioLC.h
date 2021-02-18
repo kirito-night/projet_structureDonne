@@ -23,6 +23,6 @@ Biblio * recherche_ouvrage_auteur(Biblio *b, char* auteur);
 Livre * recherche_ouvrage_titre (Biblio *b, char* titre);
 Livre * recherche_ouvrage_num (Biblio *b, int num);
 
-Biblio *suppression_ouvrage(Biblio * b , int num,  char * auteur,  char* titre);
+void suppression_ouvrage(Biblio * b , int num,  char * titre,  char* auteur);
 Biblio *fusion_biblio_2(Biblio *b1, Biblio *b2);
 #endif

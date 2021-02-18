@@ -62,7 +62,9 @@ int main(int argc, char* argv[]){
             //char titre[100], auteur[100];
             printf(" veuillez entre le num , le titre et l'auteur de l'ouvrage : ");
             scanf( "%d %s %s",&num ,titre, auteur);
+            printf("%d %s %s\n", num, titre, auteur);
             suppression_ouvrage(b,num,titre,auteur);
+            
             break;
         default:
             printf("saisie invalide\n");

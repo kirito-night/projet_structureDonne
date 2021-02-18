@@ -92,12 +92,14 @@ void afficherBiblio(Biblio* b){
     }
 }
 
-Biblio *suppression_ouvrage(Biblio * b , int num,  char * auteur,  char* titre){
+void suppression_ouvrage(Biblio * b , int num,  char * titre,  char* auteur){
     Livre *liste = b->L;
     //l'element a supprimer se trouve en tete de liste on a besoin de pousser la tete
     if(strcmp(liste->auteur, auteur)==0 && liste->num == num && strcmp(liste->titre, titre)==0){
         b->L = liste->suiv;
         liberer_livre(liste);
+        printf("l'ouvrage est supprimer");
+        return;
     }
     liste= liste->suiv;
     while (liste){
@@ -105,11 +107,13 @@ Biblio *suppression_ouvrage(Biblio * b , int num,  char * auteur,  char* titre){
             Livre *tmp = liste->suiv;
             liberer_livre(liste);
             liste=tmp;
-
+            printf("l'ouvrage est supprimer");
+            return;
         }
         liste= liste->suiv;
     } 
-    return b;
+    printf("element a supprimer n'est pas dans la bibliotheque");
+    return ;
 }
 
 
