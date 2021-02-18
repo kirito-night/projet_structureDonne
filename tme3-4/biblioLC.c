@@ -139,6 +139,29 @@ Biblio *fusion_biblio_2(Biblio *b1, Biblio *b2){
 
 }
 
+Biblio* recherche_meme_ouvrage(Biblio* b){
+    Biblio* res = (Biblio*) malloc(sizeof(Biblio));
+    Livre* temp = b->L;
+    Livre* temp2 = NULL;
+
+    while(temp){
+        temp2 = temp->suiv;
+        while(temp2){
+            if((strcmp(temp->auteur,temp2->auteur)==0)&&(strcmp(temp->titre,temp2->titre)==0)){
+                if(recherche_ouvrage_num(res,temp->num) == NULL){
+                    inserer_en_tete(res,temp->num,temp->titre,temp->auteur);
+                }
+                if(recherche_ouvrage_num(res,temp2->num)==NULL){
+                    inserer_en_tete(res,temp2->num,temp2->titre,temp2->auteur);
+                }
+            }
+            temp2 = temp2->suiv;
+        }
+        temp = temp->suiv;
+    }
+
+    return res;
+}
 
 /*
 
