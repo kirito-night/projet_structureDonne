@@ -47,23 +47,25 @@ Livre * recherche_ouvrage_num (Biblio *b, int num){
     Livre * l =b->L;
     while(l){
         if(l->num == num){
+            printf("livre  trouver\n");
             return l;
         }
         l= l->suiv;
     }
-    printf("livre non trouver");
+    printf("livre non trouver\n");
     return NULL;
 }
 
-Livre * recherche_ouvrage_titre (Biblio *b, char* titre){
+Livre * recherche_ouvrage_titre (Biblio *b, char* titre){//revoie le premier ouvrage de bon titre
     Livre * l =b->L;
     while(l){
         if(strcmp(l->titre,titre)==0){
+            printf("livre  trouver\n");
             return l;
         }
         l= l->suiv;
     }
-    printf("livre non trouver");
+    printf("livre non trouver\n");
     return NULL;
 }
 
@@ -75,6 +77,11 @@ Biblio * recherche_ouvrage_auteur(Biblio *b, char* auteur){
             inserer_en_tete(res,l->num, l->titre, l->auteur);
         }
         l =  l->suiv;
+    }
+    if(res->L == NULL){
+        printf("livre non trouver\n");
+    }else{
+        printf("livre  trouver\n");
     }
     return res;
 }

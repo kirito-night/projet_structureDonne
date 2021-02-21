@@ -21,6 +21,7 @@ Biblio* charger_n_entrees(char* nomfic, int n){
         inserer_en_tete(b,num, strdup(titre), strdup(auteur));
 
     }
+    
 
     fclose(f);
     return b;
@@ -29,12 +30,16 @@ Biblio* charger_n_entrees(char* nomfic, int n){
 
 void enregistrer_biblio(Biblio *b, char* nomfic){
     FILE *f = fopen(nomfic,"w");
+    if(f==NULL){
+        printf("enregistrement echouer: unable to open file");
+    }
     Livre *tmp = b->L;
     while(tmp){
-        fprintf(f,"%d %s %s ", tmp->num, tmp->titre, tmp->auteur);
+        fprintf(f,"%d %s %s\n", tmp->num, tmp->titre, tmp->auteur);
         tmp = tmp->suiv;
     }
 
     fclose(f);
+    printf("enregistrement reussit");
 
 }
