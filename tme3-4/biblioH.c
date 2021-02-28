@@ -80,6 +80,29 @@ LivreH * recherche_ouvrage_num (BiblioH *b, int num){
     return NULL;
 }
 
+
+LivreH * recherche_ouvrage_titre(BiblioH *b, char * titre){
+    int i; 
+    for(i =0 ; i< b->m ; i++){
+        LivreH *tmp = b->T[i];
+        while (tmp){
+            if(strcmp(tmp->auteur, titre)== 0){
+                printf("livre  trouver\n");
+                return tmp;
+            }
+        }
+    }
+    printf("livre non trouver\n");
+    return NULL;
+}
+
+BiblioH * recherche_ouvrage_auteur(BiblioH *b, char * auteur){
+    int i = fonctionClef(auteur);
+    BiblioH *res = b->T[i];
+    return res ;
+}
+
+
 void afficher_livre(LivreH *l){
      printf("Titre : %s, Auteur : %s, Numero : %d\n", l->titre, l->auteur, l->num);
 }
