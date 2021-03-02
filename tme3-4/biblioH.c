@@ -63,6 +63,7 @@ void inserer(BiblioH * b, int num, char* titre , char* auteur){
     LivreH *ins = creer_livre(num,titre,auteur);
     ins->suivant = (b->T)[i];
     (b->T)[i] = ins;
+    b->nE +=1;
 }
 
 LivreH * recherche_ouvrage_num (BiblioH *b, int num){
@@ -97,11 +98,20 @@ LivreH * recherche_ouvrage_titre(BiblioH *b, char * titre){
 }
 
 BiblioH * recherche_ouvrage_auteur(BiblioH *b, char * auteur){
+    /*revoioe un biblio qui contient la liste des livre de l'auteur rechercher dans la case qu'il faut*/
     int i = fonctionClef(auteur);
-    BiblioH *res = b->T[i];
+    BiblioH *res = creer_biblio(b->m);
+    (res->T)[0] =  b->T[i];
     return res ;
 }
 
+LivreH * recherche_ouvrage_auteur_L(BiblioH *b, char * auteur){
+    /*revoie la liste des ouvrages des l'auteur rechercher*/
+    int i = fonctionClef(auteur);
+    LivreH *res = creer_livre(b->T[i]->num,b->T[i]->titre,b->T[i]->auteur);
+    
+    return res ;
+}
 
 void afficher_livre(LivreH *l){
      printf("Titre : %s, Auteur : %s, Numero : %d\n", l->titre, l->auteur, l->num);
@@ -116,4 +126,44 @@ void afficher_biblio(BiblioH *b){
             tmp = tmp->suivant;
         }
     }
+}
+
+void suppression_ouvrage(BiblioH * b , int num,  char * titre,  char* auteur){
+    int i = fonctionClef(auteur);
+    LivreH *liste = b->T[i];
+    while(liste){
+        if(liste->num == num && strcmp(liste->titre, titre)==0){
+            LivreH *tmp = liste->suivant;
+            liberer_livre(liste);
+            liste=tmp;
+            printf("l'ouvrage est supprimer");
+            return;
+        }
+        liste= liste->suivant;
+    }
+    printf("element a supprimer n'est pas dans la bibliotheque");
+    return ;
+
+}
+
+BiblioH* recherche_meme_ouvrage(BiblioH* b){ // a voir 
+    BiblioH *res = creer_biblio(b->m);
+    int i ; 
+    for(i=  0 ; i < b->m; i++){
+        LivreH *l = b->T[i];
+        while(l){
+            char * titre = l->titre;
+            LivreH *tmp = l->suivant;
+            while(tmp){
+                if(strcmp(titre,tmp->titre)==0){
+                    inserer(res,b->T[i]->num,b->T[i]->titre,b->T[i]->auteur);
+                    inserer(res,tmp->num,tmp->titre,tmp->auteur);
+                }
+                tmp=tmp->suivant;
+            }
+            l=l->suivant;
+        }
+    }
+    return res;
+
 }
