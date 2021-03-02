@@ -1,5 +1,19 @@
-EX = main
+EX = main mainH
 all : $(EX)
+
+mainH : mainH.o biblioH.o entreeSortieH.o
+	gcc mainH.o biblioH.o entreeSortieH.o -o mainH -Wall
+
+mainH.o : mainH.c biblioH.h entreeSortieH.h
+	gcc -c mainH.c -Wall
+
+biblioH.o : biblioH.c biblioH.h
+	gcc -c biblioH.c -Wall
+
+entreeSortieH.o : entreeSortieH.c entreeSortieH.h
+	gcc -c entreeSortieH.c
+
+
 
 main: main.o biblioLC.o entreeSortieLC.o
 	gcc  main.o biblioLC.o entreeSortieLC.o -o main -Wall

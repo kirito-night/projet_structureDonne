@@ -66,7 +66,7 @@ void inserer(BiblioH * b, int num, char* titre , char* auteur){
     b->nE +=1;
 }
 
-LivreH * recherche_ouvrage_num (BiblioH *b, int num){
+LivreH * recherche_ouvrage_num(BiblioH *b, int num){
     int i; 
     for(i =0 ; i< b->m ; i++){
         LivreH *tmp = b->T[i];
