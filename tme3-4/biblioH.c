@@ -87,7 +87,7 @@ LivreH * recherche_ouvrage_titre(BiblioH *b, char * titre){
     for(i =0 ; i< b->m ; i++){
         LivreH *tmp = b->T[i];
         while (tmp){
-            if(strcmp(tmp->auteur, titre)== 0){
+            if(strcmp(tmp->titre, titre)== 0){
                 printf("livre  trouver\n");
                 return tmp;
             }
@@ -99,27 +99,31 @@ LivreH * recherche_ouvrage_titre(BiblioH *b, char * titre){
 
 BiblioH * recherche_ouvrage_auteur(BiblioH *b, char * auteur){
     /*revoioe un biblio qui contient la liste des livre de l'auteur rechercher dans la case qu'il faut*/
-    int i = fonctionClef(auteur);
+    int i = fonctionHachage(fonctionClef(auteur), b->m);
     BiblioH *res = creer_biblio(b->m);
-    (res->T)[0] =  b->T[i];
+    LivreH * liste  = b->T[i];
+    while(liste){
+        inserer(res, liste->num, liste->titre, liste->auteur);
+        liste = liste->suivant;
+    }
     return res ;
 }
 
-LivreH * recherche_ouvrage_auteur_L(BiblioH *b, char * auteur){
-    /*revoie la liste des ouvrages des l'auteur rechercher*/
+/*LivreH * recherche_ouvrage_auteur_L(BiblioH *b, char * auteur){
+   
     int i = fonctionClef(auteur);
     LivreH *res = creer_livre(b->T[i]->num,b->T[i]->titre,b->T[i]->auteur);
     
     return res ;
 }
-
+*/
 void afficher_livre(LivreH *l){
      printf("Titre : %s, Auteur : %s, Numero : %d\n", l->titre, l->auteur, l->num);
 }
 
 void afficher_biblio(BiblioH *b){
     int i ; 
-    for(i = 0 ; i < b->nE; i++){
+    for(i = 0 ; i < b->m; i++){
         LivreH *tmp = b->T[i];
         while (tmp){
             afficher_livre(tmp);
@@ -129,7 +133,7 @@ void afficher_biblio(BiblioH *b){
 }
 
 void suppression_ouvrage(BiblioH * b , int num,  char * titre,  char* auteur){
-    int i = fonctionClef(auteur);
+    int i = fonctionHachage(fonctionClef(auteur), b->m);
     LivreH *liste = b->T[i];
     while(liste){
         if(liste->num == num && strcmp(liste->titre, titre)==0){
@@ -150,7 +154,7 @@ BiblioH* recherche_meme_ouvrage(BiblioH* b){ // a voir
     BiblioH *res = creer_biblio(b->m);
     int i ; 
     for(i=  0 ; i < b->m; i++){
-        
+
         LivreH *l = b->T[i];
         while(l){
             char * titre = l->titre;
@@ -167,4 +171,19 @@ BiblioH* recherche_meme_ouvrage(BiblioH* b){ // a voir
     }
     return res;
 
+}
+
+BiblioH* fusion_biblio(BiblioH  *b1 , BiblioH *b2){
+
+    int i ;
+    for(i=0 ; i < b2->m; i++){
+        LivreH *liste =b2->T[i];
+        while(liste){
+          
+            inserer(b1,liste->num,liste->titre, liste->auteur);
+            liste = liste->suivant;
+        }
+    }
+    liberer_biblio(b2);
+    return b1;
 }

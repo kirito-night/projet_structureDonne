@@ -1,7 +1,7 @@
 #include "entreeSortieH.h"
 #include<stdio.h>
 #include<string.h>
-BiblioH* charger_n_entrees(char* nomfic, int n){
+BiblioH* charger_n_entrees_h(char* nomfic, int n){
     BiblioH *b = creer_biblio(n);
     FILE *f = fopen(nomfic,"r");
     if(f ==NULL){
@@ -26,7 +26,7 @@ BiblioH* charger_n_entrees(char* nomfic, int n){
     return b;
 }
 
-void enregistrer_biblio(BiblioH *b, char* nomfic){
+void enregistrer_biblio_h(BiblioH *b, char* nomfic){
     FILE *f = fopen(nomfic,"w");
     if(f==NULL){
         printf("enregistrement echouer: unable to open file");
