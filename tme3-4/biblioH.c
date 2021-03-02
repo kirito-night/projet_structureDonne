@@ -150,6 +150,7 @@ BiblioH* recherche_meme_ouvrage(BiblioH* b){ // a voir
     BiblioH *res = creer_biblio(b->m);
     int i ; 
     for(i=  0 ; i < b->m; i++){
+        
         LivreH *l = b->T[i];
         while(l){
             char * titre = l->titre;
