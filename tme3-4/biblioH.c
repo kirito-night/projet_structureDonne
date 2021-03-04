@@ -54,12 +54,13 @@ void liberer_biblio(BiblioH * b){
 }
 
 int fonctionHachage(int cle, int m){
-    int A =(sqrt(5)-1)/2;
+    float A =(sqrt(5)-1)/2;
     return (int)(m*(cle* A - (int)(cle*A)));
 }
 
 void inserer(BiblioH * b, int num, char* titre , char* auteur){
     int i = fonctionHachage(fonctionClef(auteur), b->m);
+    //printf("achage : %d \n", i);
     LivreH *ins = creer_livre(num,titre,auteur);
     ins->suivant = (b->T)[i];
     (b->T)[i] = ins;
@@ -91,6 +92,7 @@ LivreH * recherche_ouvrage_titre(BiblioH *b, char * titre){
                 printf("livre  trouver\n");
                 return tmp;
             }
+            tmp= tmp->suivant;
         }
     }
     printf("livre non trouver\n");
@@ -118,10 +120,17 @@ BiblioH * recherche_ouvrage_auteur(BiblioH *b, char * auteur){
 }
 */
 void afficher_livre(LivreH *l){
-     printf("Titre : %s, Auteur : %s, Numero : %d\n", l->titre, l->auteur, l->num);
+    if(l==NULL){
+        return ; 
+    }
+     printf("Titre : %s, Auteur : %s, Numero : %d , Clef : %d\n", l->titre, l->auteur, l->num, l->clef);
 }
 
 void afficher_biblio(BiblioH *b){
+    if(b==NULL){
+        printf("biblio vide");
+        return;
+    }
     int i ; 
     for(i = 0 ; i < b->m; i++){
         LivreH *tmp = b->T[i];
