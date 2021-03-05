@@ -35,18 +35,18 @@ BiblioH * creer_biblio(int m){
     res->m = m;
     res->nE = 0;
     res->T = (LivreH**)malloc(sizeof(LivreH*)*m);
-    //memset(res->T, 0 , sizeof(LivreH*)*m);
-    int i = 0;
+    memset(res->T, 0 , sizeof(LivreH*)*m);
+    /*int i = 0;
     for(i = 0 ; i < res->nE; i++){
         (res->T)[i] = (LivreH*)malloc(sizeof(LivreH));
-    }
+    }*/
     return res;
 
 }
 
 void liberer_biblio(BiblioH * b){
     int i = 0 ; 
-    for(i = 0 ; i < b->nE; i++){
+    for(i = 0 ; i < b->m; i++){
         liberer_livre((b->T)[i]);
 
     }
@@ -76,6 +76,7 @@ LivreH * recherche_ouvrage_num(BiblioH *b, int num){
                 printf("livre  trouver\n");
                 return tmp;
             }
+            tmp = tmp->suivant;
         }
     }
     printf("livre non trouver\n");
@@ -104,10 +105,17 @@ BiblioH * recherche_ouvrage_auteur(BiblioH *b, char * auteur){
     int i = fonctionHachage(fonctionClef(auteur), b->m);
     BiblioH *res = creer_biblio(b->m);
     LivreH * liste  = b->T[i];
+    int j = 0; 
     while(liste){
-        inserer(res, liste->num, liste->titre, liste->auteur);
+        if(strcmp(liste->auteur , auteur) == 0){
+            inserer(res, liste->num, liste->titre, liste->auteur);
+            j++;
+
+        }
+       
         liste = liste->suivant;
     }
+    printf(" %d  ouvrage de l'auteur : %s sont trouve : \n ", j , auteur);
     return res ;
 }
 

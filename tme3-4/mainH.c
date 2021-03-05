@@ -116,6 +116,7 @@ int main(int argc, char* argv[]){
                 break;
             default:
                 printf("saisie invalide, retapper 4 pour refaire votre rechereche :");
+
                 break;
             }
 
@@ -124,6 +125,16 @@ int main(int argc, char* argv[]){
 
         default:
             printf("saisie invalide\n");
+            printf("entrer 0 pour  sortir du programme\n entrer un nb quelconque pour rester dans le programme");
+            int def;
+            scanf("%d",&def);
+            if(def == 0){
+                printf("vous etes sorti de la boucle\n");
+                exit(1);
+                
+            }
+            
+            
             break;
         }
 
