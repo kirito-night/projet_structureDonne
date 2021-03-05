@@ -34,9 +34,12 @@ void enregistrer_biblio_h(BiblioH *b, char* nomfic){
     int i;
     LivreH **tmp = b->T;
     for(i =0  ; i< b->m ; i++){
-        while(tmp[i])
-        fprintf(f,"%d %s %s\n", tmp[i]->num, tmp[i]->titre, tmp[i]->auteur);
-        tmp[i] =tmp[i]->suivant; 
+        LivreH *l = tmp[i];
+        while(l){
+            fprintf(f,"%d %s %s\n", l->num, l->titre, l->auteur);
+            l =l->suivant; 
+        }
+        
     }
 
     fclose(f);

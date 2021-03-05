@@ -34,7 +34,10 @@ int main(int argc, char* argv[]){
     do{
         menu();
         printf("entrer votre choix : ");
-        scanf("%d", &rep);
+        if(scanf("%d", &rep)!= 1 ){
+            printf("erreur formatage \n");
+            exit(1);
+        }
         
         switch (rep){
         case 1:
@@ -138,6 +141,7 @@ int main(int argc, char* argv[]){
         case 6:
             printf("entrez le nb de ligne que vous voulez lire \n");
             scanf("%d",&nbligne_alire);
+            liberer_biblio(b);
             b=charger_n_entrees(nomfic,nbligne_alire);
 
 

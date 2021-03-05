@@ -47,7 +47,12 @@ BiblioH * creer_biblio(int m){
 void liberer_biblio(BiblioH * b){
     int i = 0 ; 
     for(i = 0 ; i < b->m; i++){
-        liberer_livre((b->T)[i]);
+        LivreH * tmp = (b->T)[i];
+        while (tmp){
+            LivreH *tmps = tmp->suivant;
+            liberer_livre(tmp);
+            tmp = tmps;
+        }
 
     }
     free(b->T);
@@ -149,11 +154,11 @@ void afficher_biblio(BiblioH *b){
     }
 }
 
-void suppression_ouvrage(BiblioH * b , int num,  char * titre,  char* auteur){
+/*void suppression_ouvrage(BiblioH * b , int num,  char * titre,  char* auteur){
     int i = fonctionHachage(fonctionClef(auteur), b->m);
     LivreH *liste = b->T[i];
     while(liste){
-        if(liste->num == num && strcmp(liste->titre, titre)==0){
+        if(liste->num == num && strcmp(liste->titre, titre)==0 && strcmp(liste->auteur , auteur) == 0){
             LivreH *tmp = liste->suivant;
             liberer_livre(liste);
             liste=tmp;
@@ -165,7 +170,35 @@ void suppression_ouvrage(BiblioH * b , int num,  char * titre,  char* auteur){
     printf("element a supprimer n'est pas dans la bibliotheque");
     return ;
 
+
+}*/
+
+void suppression_ouvrage(BiblioH * b , int num,  char * titre,  char* auteur){
+    int i = fonctionHachage(fonctionClef(auteur), b->m);
+    LivreH *liste = b->T[i];
+    if(liste->num == num && strcmp(liste->titre, titre)==0 && strcmp(liste->auteur , auteur) == 0){
+        LivreH *suiv = liste->suivant;
+        free(liste);
+        b->T[i] = suiv;
+        printf("l'ouvrage est supprimer");
+        return;
+
+    }
+    while(liste-> suivant){
+        if(liste->suivant->num == num && strcmp(liste->suivant->titre, titre)==0 && strcmp(liste->suivant->auteur , auteur) == 0){
+            LivreH *tmp = liste->suivant->suivant;
+            liberer_livre(liste->suivant);
+            liste->suivant=tmp;
+            printf("l'ouvrage est supprimer");
+            return;
+        }
+        liste= liste->suivant;
+    }
+    printf("element a supprimer n'est pas dans la bibliotheque");
+    return ;
+
 }
+
 
 BiblioH* recherche_meme_ouvrage(BiblioH* b){ // a voir 
     BiblioH *res = creer_biblio(b->m);

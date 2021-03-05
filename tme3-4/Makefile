@@ -1,6 +1,19 @@
 EX = main mainH
 all : $(EX)
 
+comparaisonH :comparaisonH.o biblioH.o
+	gcc comparaisonH.o  biblioH.o  -o comparaisonH -Wall -g
+
+
+comparaison : comparaison.o   biblioLC.o
+	gcc comparaison.o  biblioLC.o -o comparaison -Wall -g
+
+comparaisonH.o : comparaisonH.c biblioH.h
+	gcc -c comparaisonH.c -Wall
+
+comparaison.o: comparaison.c  biblioLC.h
+	gcc -c comparaison.c -Wall
+
 mainH : mainH.o biblioH.o entreeSortieH.o
 	gcc mainH.o biblioH.o entreeSortieH.o -o mainH -Wall
 

@@ -34,7 +34,10 @@ int main(int argc, char* argv[]){
 
         menu();
         printf("entrer votre choix : ");
-        scanf("%d", &rep);
+        if(scanf("%d", &rep)!= 1){
+            printf("erreur formatage \n");
+            exit(1);
+        }
         switch (rep)
         {
         case 1:
@@ -119,13 +122,34 @@ int main(int argc, char* argv[]){
 
                 break;
             }
+            
+
+
+            break;
+
+
+        
+        case 5: 
+            printf("entrez le nom du fichier que vous voulez enregister le bibliotheque \n");
+            char nom_enregistrer[50];
+            scanf("%s", nom_enregistrer);
+            enregistrer_biblio_h(b,nom_enregistrer);
+            break;
+        
+
+        case 6:
+            printf("entrez le nb de ligne que vous voulez lire \n");
+            scanf("%d",&nbligne_alire);
+            liberer_biblio(b);
+            
+            b=charger_n_entrees_h(nomfic,nbligne_alire);
 
 
             break;
 
         default:
             printf("saisie invalide\n");
-            printf("entrer 0 pour  sortir du programme\n entrer un nb quelconque pour rester dans le programme");
+            /*printf("entrer 0 pour etre sur de sortir du programme\n entrer un nb quelconque pour rester dans le programme");
             int def;
             scanf("%d",&def);
             if(def == 0){
@@ -133,7 +157,7 @@ int main(int argc, char* argv[]){
                 exit(1);
                 
             }
-            
+            */
             
             break;
         }
