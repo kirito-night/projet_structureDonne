@@ -19,6 +19,10 @@ int main(int argc, char* argv[]){
 
 
     FILE *f = fopen("sortie_vitesse.txt", "w");   /* Ouverture du fichier pour gnuplot */
+    if(f == NULL){
+        printf("erreur d'ouverture de fichier");
+        exit(1);
+    }
 
     clock_t temps_initial; 
     clock_t temps_final;
