@@ -109,11 +109,11 @@ void suppression_ouvrage(Biblio * b , int num,  char * titre,  char* auteur){
         return;
     }
     liste= liste->suiv;
-    while (liste){
-        if(strcmp(liste->auteur, auteur)==0 && liste->num == num && strcmp(liste->titre, titre)==0){
-            Livre *tmp = liste->suiv;
-            liberer_livre(liste);
-            liste=tmp;
+    while (liste->suiv){
+        if(strcmp(liste->suiv->auteur, auteur)==0 && liste->suiv->num == num && strcmp(liste->suiv->titre, titre)==0){
+            Livre *tmp = liste->suiv->suiv;
+            liberer_livre(liste->suiv);
+            liste->suiv=tmp;
             printf("l'ouvrage est supprimer");
             return;
         }

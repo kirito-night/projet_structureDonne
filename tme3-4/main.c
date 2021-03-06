@@ -138,6 +138,7 @@ int main(int argc, char* argv[]){
             scanf("%s", nom_enregistrer);
             enregistrer_biblio(b,nom_enregistrer);
             break;
+            
         case 6:
             printf("entrez le nb de ligne que vous voulez lire \n");
             scanf("%d",&nbligne_alire);
