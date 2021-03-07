@@ -15,6 +15,9 @@ void menu(){
     printf("entrer 4 pour rechercher un ouvrage dans la bibliotheque \n");
     printf("entrer 5 pour enregistrer la bibliotheque dans un nouveau fichier \n");
     printf("entrer 6 pour renouveller la bibliotheque avec un nouveau nombre de ligne (les element dont vous avez inserer ou supprimer va etre supprimer) \n");
+
+
+    printf("entrer 7 pour fusionner le bibliotheque present avec un autre bibliotheque qui dans un fichier   \n");
     putchar('\n');
 
 
@@ -147,6 +150,17 @@ int main(int argc, char* argv[]){
 
 
             break;
+        
+        case 7 :
+            printf("entrez le nom du fichier qui contient le bibliotheque a fusionner et le nb de ligne que vous voulez lire :  ");
+            char nom_fichier_f[50];
+            int nbfusion ;
+            scanf("%s %d", nom_fichier_f , &nbfusion);
+            
+            Biblio *bf = charger_n_entrees(nom_fichier_f,nbfusion);
+            b=fusion_biblio_2(bf, b);
+
+            break ;
         default:
             printf("saisie invalide\n");
             break;

@@ -225,6 +225,12 @@ BiblioH* recherche_meme_ouvrage(BiblioH* b){ // a voir
 
 BiblioH* fusion_biblio(BiblioH  *b1 , BiblioH *b2){
 
+    if(b2 == NULL){
+        return b1;
+    }
+     if(b1 == NULL){
+        return b2;
+    }
     int i ;
     for(i=0 ; i < b2->m; i++){
         LivreH *liste =b2->T[i];
@@ -235,5 +241,6 @@ BiblioH* fusion_biblio(BiblioH  *b1 , BiblioH *b2){
         }
     }
     liberer_biblio(b2);
+    printf("fusion fait !");
     return b1;
 }

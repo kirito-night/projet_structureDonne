@@ -6,7 +6,8 @@ Biblio* charger_n_entrees(char* nomfic, int n){
     Biblio *b = creer_biblio();
     FILE *f = fopen(nomfic,"r");
     if(f ==NULL){
-        fprintf(stderr," erreur d'ouverture de ficher");
+        fprintf(stderr," erreur d'ouverture de ficher \n");
+        return NULL;
     }
 
     char buffer[256];
@@ -32,6 +33,7 @@ void enregistrer_biblio(Biblio *b, char* nomfic){
     FILE *f = fopen(nomfic,"w");
     if(f==NULL){
         printf("enregistrement echouer: unable to open file");
+        return;
     }
     Livre *tmp = b->L;
     while(tmp){
