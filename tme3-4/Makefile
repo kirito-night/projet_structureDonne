@@ -1,12 +1,12 @@
-EX = main mainH
+EX = main mainH comparaisonH comparaisonLC
 all : $(EX)
 
-comparaisonH :comparaisonH.o biblioH.o
-	gcc comparaisonH.o  biblioH.o  -o comparaisonH -Wall -g
+comparaisonH :comparaisonH.o biblioH.o entreeSortieH.o
+	gcc comparaisonH.o  biblioH.o entreeSortieH.o  -o comparaisonH -Wall -g
 
 
-comparaisonLC : comparaisonLC.o   biblioLC.o
-	gcc comparaisonLC.o  biblioLC.o -o comparaison -Wall -g
+comparaisonLC : comparaisonLC.o   biblioLC.o entreeSortieLC.o
+	gcc comparaisonLC.o biblioLC.o entreeSortieLC.o -o comparaisonLC -Wall
 
 comparaisonH.o : comparaisonH.c biblioH.h
 	gcc -c comparaisonH.c -Wall
