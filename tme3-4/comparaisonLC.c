@@ -3,6 +3,7 @@
 #include <time.h>
 #include <stdio.h>
 #include <stdlib.h>
+#define NB 100000
 
 // Pour obtenir le temps de calcul avec une liste chainée.
 
@@ -13,59 +14,47 @@ int main(int argc, char* argv[]){
         return 0;
     }
     char *nomfic = argv[1];
-    int nb_lignes;
-    printf("Combien de lignes du fichier voulez vous lire ?\n");
-    scanf("%d",&nb_lignes);
 
-
-    FILE *f = fopen("sortie_vitesse.txt", "w");  /* Ouverture du fichier pour gnuplot */
+    FILE *f = fopen("sortie_vitesse_liste_chainee.txt", "w");  // Ouverture du fichier pour gnuplot 
     if(f == NULL){
         printf("erreur d'ouverture de fichier");
         exit(1);
     }
 
-    clock_t temps_initial; 
-    clock_t temps_final;
-    double temps_cpu;
-    Biblio* b_LC = charger_n_entrees(nomfic, nb_lignes);
-
+    Biblio* b_LC;
     
-    /* Recherche avec le numero du livre. */
-    
-    // int n; 
-    // for(n = 0 ; n <  nb_lignes; n++){
-    //     temps_initial = clock();
-    //     recherche_ouvrage_num(b_LC, n);
-    //     temps_final = clock();
-    //     temps_cpu = ((double)(temps_final -temps_initial));
-    //     printf("Temps pour rechercher le livre n°%d avec une liste chainée : %.1f\n",n ,temps_cpu);
-    // }
+    int n; 
+    for(n = 0 ; n < NB; n++){
+        clock_t temps_initial; 
+        clock_t temps_final;
+        double temps_cpu;
 
-    
-    /* Recherche à partir du nom d'un auteur */
+        b_LC = charger_n_entrees(nomfic, n);
 
-    // char* auteur = (char*) malloc(sizeof(char) * 50);
-    // printf("Veuillez saisir l'auteur du livre que vous recherchez\n");
-    // scanf("%s",auteur);
-    // temps_initial = clock();
-    // recherche_ouvrage_auteur(b_LC, auteur);
-    // temps_final = clock();
-    // temps_cpu = ((double)(temps_final -temps_initial));
-    // printf("Temps pour rechercher le livre écrit par %s avec une liste chainée : %.1f\n", auteur,temps_cpu);
+        temps_initial = clock();
+        // Recherche avec le numero du livre.
+        recherche_ouvrage_num(b_LC, n);
 
-    
-    /* Recherche à partir du nom du livre */
+        // Recherche à partir du nom d'un auteur
+        char* auteur = (char*) malloc(sizeof(char)*50);
+        strcpy(auteur,"tuomak");
+        recherche_ouvrage_auteur(b_LC, auteur);
 
-    char* titre = (char*) malloc(sizeof(char) * 50);
-    printf("Veuillez saisir le titre du livre que vous recherchez\n");
-    scanf("%s",titre);
-    temps_initial = clock();
-    recherche_ouvrage_titre(b_LC, titre);
-    temps_final = clock();
-    temps_cpu = ((double)(temps_final -temps_initial));
-    printf("Temps pour rechercher le livre %s avec liste chainée : %.1f\n", titre,temps_cpu);
+        // Recherche à partir du nom du livre
+        char* titre = (char*) malloc(sizeof(char)*50);
+        strcpy(titre,"PDHPXJPZTUGNNRLX");
+        recherche_ouvrage_titre(b_LC, titre);
+        temps_final = clock();
 
-    fclose(f);  /* Fermeture du fichier pour gnuplot */
+        temps_cpu = ((double)(temps_final -temps_initial));
+
+        fprintf(f,"%d  %f\n", n, temps_cpu);
+        
+        liberer_biblio(b_LC);
+    }
+
+
+    fclose(f);  // Fermeture du fichier pour gnuplot 
 
     return 0;
 }
