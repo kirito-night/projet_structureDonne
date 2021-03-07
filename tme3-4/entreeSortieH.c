@@ -18,7 +18,7 @@ BiblioH* charger_n_entrees_h(char* nomfic, int n){
     for( i = 0 ; i < n ; i++){
         fgets(buffer, 256,f);
         sscanf(buffer,"%d %s %s ", &num, titre, auteur);
-        inserer(b,num, strdup(titre), strdup(auteur));
+        inserer(b,num, titre, auteur);//pas besoins de strdup car la fonction inserer fait appel a la fonction creer livre qui alloue les memeoire necessaire 
 
     }
     

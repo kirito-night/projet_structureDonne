@@ -38,16 +38,17 @@ BiblioH * creer_biblio(int m){
     memset(res->T, 0 , sizeof(LivreH*)*m);
     /*int i = 0;
     for(i = 0 ; i < res->nE; i++){
-        (res->T)[i] = (LivreH*)malloc(sizeof(LivreH));
-    }*/
+        (res->T)[i] = NULL;
+    }
+    */
     return res;
 
 }
 
 void liberer_biblio(BiblioH * b){
-    int i = 0 ; 
+    int i ; 
     for(i = 0 ; i < b->m; i++){
-        LivreH * tmp = (b->T)[i];
+        LivreH * tmp = b->T[i];
         while (tmp){
             LivreH *tmps = tmp->suivant;
             liberer_livre(tmp);
@@ -56,6 +57,7 @@ void liberer_biblio(BiblioH * b){
 
     }
     free(b->T);
+    free(b);
 }
 
 int fonctionHachage(int cle, int m){
