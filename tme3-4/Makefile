@@ -5,14 +5,14 @@ comparaisonH :comparaisonH.o biblioH.o
 	gcc comparaisonH.o  biblioH.o  -o comparaisonH -Wall -g
 
 
-comparaison : comparaison.o   biblioLC.o
-	gcc comparaison.o  biblioLC.o -o comparaison -Wall -g
+comparaisonLC : comparaisonLC.o   biblioLC.o
+	gcc comparaisonLC.o  biblioLC.o -o comparaison -Wall -g
 
 comparaisonH.o : comparaisonH.c biblioH.h
 	gcc -c comparaisonH.c -Wall
 
-comparaison.o: comparaison.c  biblioLC.h
-	gcc -c comparaison.c -Wall
+comparaisonLC.o: comparaisonLC.c  biblioLC.h
+	gcc -c comparaisonLC.c -Wall
 
 mainH : mainH.o biblioH.o entreeSortieH.o
 	gcc mainH.o biblioH.o entreeSortieH.o -o mainH -Wall
