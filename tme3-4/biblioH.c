@@ -52,6 +52,7 @@ void liberer_biblio(BiblioH * b){
         while (tmp){
             LivreH *tmps = tmp->suivant;
             liberer_livre(tmp);
+            
             tmp = tmps;
         }
 

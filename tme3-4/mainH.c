@@ -179,7 +179,7 @@ int main(int argc, char* argv[]){
 
 
     }while(rep!=0);
-
+    liberer_biblio(b);
     printf("c'est le main table hachage\n");
     printf("vous etes sorti de la boucle\n");
 
