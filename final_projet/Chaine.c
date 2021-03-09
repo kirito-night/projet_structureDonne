@@ -49,37 +49,30 @@ Chaines* lectureChaines(FILE *f){
 }
 
 void ecrireChaine(Chaines *C, FILE *f){
-    fprintf(f,"NbChain : %d \n Gamma : %d\n\n",C->nbChaines,C->gamma);
+    fprintf(f,"NbChain : %d \n Gamma : %d\n",C->nbChaines,C->gamma);
     int i ;
     CellChaine *liste_chaine = C->chaines;
     for(i = 0 ; i <C->nbChaines ; i++){
-        fprintf(f,"%d ",liste_chaine->numero);
         
-    }
-}
-
-
-int comptePointsTotal(Chaines* C)
-{
-
-    if(C==NULL){
-        return 0;
-    }
-    
-    int nb_points = 0;
-
-    CellChaine* temp = C->chaines;
-
-    while(temp!=NULL){
-        CellPoint* point = temp->points;
-        while(point!=NULL){
-            nb_points+=1;
-            point = point->suiv;
+        int nb_points = 0; 
+        CellPoint *liste_point = liste_chaine->points;
+        while(liste_point){
+            nb_points +=1;
+            liste_point=  liste_point->suiv;
         }
-        temp = temp->suiv;
+
+        fprintf(f,"%d %d ",liste_chaine->numero, nb_points);
+        liste_point = liste_chaine->points;
+        while(liste_point){
+            fprintf(f, "%f %f ",liste_point->x,liste_point->y);
+
+        }
+        fprintf(f,"\n");
+
     }
-    return nb_points;
 }
+
+
 
 
 
@@ -124,4 +117,26 @@ double longueurTotale(Chaines* C)
     }
 
     return res;
+}
+
+int comptePointsTotal(Chaines* C)
+{
+
+    if(C==NULL){
+        return 0;
+    }
+    
+    int nb_points = 0;
+
+    CellChaine* temp = C->chaines;
+
+    while(temp!=NULL){
+        CellPoint* point = temp->points;
+        while(point!=NULL){
+            nb_points+=1;
+            point = point->suiv;
+        }
+        temp = temp->suiv;
+    }
+    return nb_points;
 }
