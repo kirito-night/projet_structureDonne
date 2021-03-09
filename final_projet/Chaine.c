@@ -50,11 +50,36 @@ Chaines* lectureChaines(FILE *f){
 
 void ecrireChaine(Chaines *C, FILE *f){
     fprintf(f,"NbChain : %d \n Gamma : %d\n\n",C->nbChaines,C->gamma);
-    int i = 0;
+    int i ;
+    CellChaine *liste_chaine = C->chaines;
+    for(i = 0 ; i <C->nbChaines ; i++){
+        fprintf(f,"%d ",liste_chaine->numero);
+        
+    }
 }
 
 
+int comptePointsTotal(Chaines* C)
+{
 
+    if(C==NULL){
+        return 0;
+    }
+    
+    int nb_points = 0;
+
+    CellChaine* temp = C->chaines;
+
+    while(temp!=NULL){
+        CellPoint* point = temp->points;
+        while(point!=NULL){
+            nb_points+=1;
+            point = point->suiv;
+        }
+        temp = temp->suiv;
+    }
+    return nb_points;
+}
 
 
 
