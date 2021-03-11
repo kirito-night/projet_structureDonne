@@ -4,6 +4,7 @@
 #include <math.h>
 #include<stdio.h>
 int fonctionClef(char* auteur){
+    /*  la clef est la somme des valeur ASCII   du nom de l'auteur */
     int sum = 0;
     int i = 0;
     while(auteur[i]!= '\0'){
@@ -26,7 +27,7 @@ LivreH * creer_livre( int num , char * titre, char * auteur){
 
 void liberer_livre(LivreH *l){
     free(l->auteur);
-    free(l->titre);
+    free(l->titre); // liberer les chaines de caractere allouer avec strdup
     free(l);
 }
 
@@ -34,13 +35,8 @@ BiblioH * creer_biblio(int m){
     BiblioH* res = (BiblioH *)malloc(sizeof(BiblioH));
     res->m = m;
     res->nE = 0;
-    res->T = (LivreH**)malloc(sizeof(LivreH*)*m);
-    memset(res->T, 0 , sizeof(LivreH*)*m);
-    /*int i = 0;
-    for(i = 0 ; i < res->nE; i++){
-        (res->T)[i] = NULL;
-    }
-    */
+    res->T = (LivreH**)malloc(sizeof(LivreH*)*m); //allocation d'un tableau de pointeur 
+    memset(res->T, 0 , sizeof(LivreH*)*m); // les case de tableau initier a NULL , et va etre allouer lors de l'insersion d'un livre avec  fonction creer livre 
     return res;
 
 }
@@ -62,12 +58,14 @@ void liberer_biblio(BiblioH * b){
 }
 
 int fonctionHachage(int cle, int m){
+    /*une fonction de hachage qui rend une valeur entre 0 et m-1 pour une clef donne */ 
     float A =(sqrt(5)-1)/2;
     return (int)(m*(cle* A - (int)(cle*A)));
 }
 
 void inserer(BiblioH * b, int num, char* titre , char* auteur){
-    int i = fonctionHachage(fonctionClef(auteur), b->m);
+    //trouvre la case a inserer le livre avec auteur et les fonctions d'hacahge et de faire une insertioin en tete de liste */
+    int i = fonctionHachage(fonctionClef(auteur), b->m); 
     //printf("achage : %d \n", i);
     LivreH *ins = creer_livre(num,titre,auteur);
     ins->suivant = (b->T)[i];
@@ -76,6 +74,7 @@ void inserer(BiblioH * b, int num, char* titre , char* auteur){
 }
 
 LivreH * recherche_ouvrage_num(BiblioH *b, int num){
+    /*parcours le tableau et la listes dans les  case du tableaux pour trouver le num correspondant et renvoie le livre*/
     int i; 
     for(i =0 ; i< b->m ; i++){
         LivreH *tmp = b->T[i];
@@ -93,6 +92,7 @@ LivreH * recherche_ouvrage_num(BiblioH *b, int num){
 
 
 LivreH * recherche_ouvrage_titre(BiblioH *b, char * titre){
+    /*parcours le tableau et la listes dans les  case du tableaux pour trouver le titre  correspondant et renvoie le livre*/
     int i; 
     for(i =0 ; i< b->m ; i++){
         LivreH *tmp = b->T[i];
@@ -109,6 +109,7 @@ LivreH * recherche_ouvrage_titre(BiblioH *b, char * titre){
 }
 
 BiblioH * recherche_ouvrage_auteur(BiblioH *b, char * auteur){
+    /*trouver la case ou est l'auteur avec auteur passer en argument*/
     /*revoioe un biblio qui contient la liste des livre de l'auteur rechercher dans la case qu'il faut*/
     int i = fonctionHachage(fonctionClef(auteur), b->m);
     BiblioH *res = creer_biblio(b->m);
@@ -127,14 +128,7 @@ BiblioH * recherche_ouvrage_auteur(BiblioH *b, char * auteur){
     return res ;
 }
 
-/*LivreH * recherche_ouvrage_auteur_L(BiblioH *b, char * auteur){
-   
-    int i = fonctionClef(auteur);
-    LivreH *res = creer_livre(b->T[i]->num,b->T[i]->titre,b->T[i]->auteur);
-    
-    return res ;
-}
-*/
+
 void afficher_livre(LivreH *l){
     if(l==NULL){
         return ; 
@@ -143,6 +137,7 @@ void afficher_livre(LivreH *l){
 }
 
 void afficher_biblio(BiblioH *b){
+    /*affichage biblio par parcours */
     if(b==NULL){
         printf("biblio vide");
         return;
@@ -157,24 +152,7 @@ void afficher_biblio(BiblioH *b){
     }
 }
 
-/*void suppression_ouvrage(BiblioH * b , int num,  char * titre,  char* auteur){
-    int i = fonctionHachage(fonctionClef(auteur), b->m);
-    LivreH *liste = b->T[i];
-    while(liste){
-        if(liste->num == num && strcmp(liste->titre, titre)==0 && strcmp(liste->auteur , auteur) == 0){
-            LivreH *tmp = liste->suivant;
-            liberer_livre(liste);
-            liste=tmp;
-            printf("l'ouvrage est supprimer");
-            return;
-        }
-        liste= liste->suivant;
-    }
-    printf("element a supprimer n'est pas dans la bibliotheque");
-    return ;
 
-
-}*/
 
 void suppression_ouvrage(BiblioH * b , int num,  char * titre,  char* auteur){
     int i = fonctionHachage(fonctionClef(auteur), b->m);
