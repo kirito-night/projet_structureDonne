@@ -1,0 +1,1 @@
+gcc Chaine.c ChainesMain.c -o ChainesMain -Wall -g -lm
