@@ -9,6 +9,7 @@ typedef struct cellnoeud {
 
 /* Noeud du reseau */
 struct noeud{
+    int clef ; 
    int num;                        /* Numero du noeud */
    double x, y;                    /* Coordonnees du noeud*/
    CellNoeud *voisins;             /* Liste des voisins du noeud */
@@ -18,7 +19,7 @@ typedef struct table {
     int nE;
     int taille; 
     CellNoeud **tab ; // le table hachage
-}
+}Table;
 
 
 
