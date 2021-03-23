@@ -4,7 +4,24 @@
 #include<string.h>
 #include<math.h>
 #include<math.h>
-#include "SVGwriter.h"
+#include"SVGwriter.h"
+
+void libererChaine(Chaines *c){
+    CellChaine *tmp_chain = c->chaines;
+    while(tmp_chain){
+        CellPoint *tmp_pnt = tmp_chain->points;
+        while(tmp_pnt){
+            CellPoint *p_suiv = tmp_pnt->suiv;
+            free(tmp_pnt);
+            tmp_pnt = p_suiv;
+        }
+        CellChaine *c_tmp = tmp_chain->suiv;
+        free(tmp_chain);
+        tmp_chain = c_tmp;
+    }
+    free(c);
+}
+
 Chaines* lectureChaines(FILE *f){
 
     Chaines *res = (Chaines *)malloc(sizeof(Chaines));
@@ -21,12 +38,12 @@ Chaines* lectureChaines(FILE *f){
     res->gamma=Gamma;
     CellChaine *liste_cha = NULL;
     for(int j =  0 ;  j < res->nbChaines ; j++){
-        fgets(buffer, 256,f);
-        printf("%s \n" , buffer);
+        //fgets(buffer, 256,f);
+        //printf("%s \n" , buffer);
         CellChaine *cha = (CellChaine *)malloc(sizeof(CellChaine));
         int num;
         int nbPoints;
-        sscanf(buffer,"%d %d ",&num,&nbPoints);
+        fscanf(f,"%d %d ",&num,&nbPoints);
         printf("%d %d \n",num,nbPoints);
         cha->numero = num;
         int i;
@@ -34,7 +51,7 @@ Chaines* lectureChaines(FILE *f){
         for(i = 0 ; i < nbPoints; i++){
             CellPoint *point = (CellPoint*)malloc(sizeof(CellPoint));
             float x, y;
-            int test = sscanf(buffer,"%f %f ",&x,&y);
+            int test = fscanf(f,"%f %f ",&x,&y);
 
             printf("%f %f  %d \n",x,y , test);
             point->x=x;
@@ -53,7 +70,10 @@ Chaines* lectureChaines(FILE *f){
     return res;
 }
 
-void ecrireChaine(Chaines *C, FILE *f){
+
+
+
+void ecrireChaines(Chaines *C, FILE *f){
     fprintf(f,"NbChain : %d \nGamma : %d\n",C->nbChaines,C->gamma);
     int i ;
     CellChaine *liste_chaine = C->chaines;
@@ -71,11 +91,12 @@ void ecrireChaine(Chaines *C, FILE *f){
         liste_point = liste_chaine->points;
         while(liste_point){
             //printf("%f %f ",liste_point->x,liste_point->y);
-            fprintf(f, "%f %f ",liste_point->x,liste_point->y);
+            fprintf(f, "%.2f %.2f ",liste_point->x,liste_point->y);
             liste_point = liste_point->suiv;
         }
+        
         fprintf(f,"\n");
-
+        liste_chaine = liste_chaine->suiv;
     }
 }
 
@@ -148,9 +169,9 @@ int comptePointsTotal(Chaines* C)
     return nb_points;
 }
 
-/*
+
 void afficheChainesSVG(Chaines *C, char* nomInstance){
-    int i;
+    //int i;
     double maxx=0,maxy=0,minx=1e6,miny=1e6;
     CellChaine *ccour;
     CellPoint *pcour;
@@ -187,4 +208,4 @@ void afficheChainesSVG(Chaines *C, char* nomInstance){
         ccour=ccour->suiv;
     }
     SVGfinalize(&svg);
-}*/
+}

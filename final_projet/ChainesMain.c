@@ -44,10 +44,12 @@ int main(int argc, char* argv[]) {
     }
 
     Chaines* c = lectureChaines(f);
-    ecrireChaine(c,chaines);
+    ecrireChaines(c,chaines);
+    afficheChainesSVG(c,"affichage");
 
     fclose(f);
     fclose(chaines);
+    
     
     return 0;
 }

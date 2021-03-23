@@ -37,5 +37,10 @@ void ecrireReseau(Reseau *R, FILE *f);
 int nbLiaisons(Reseau *R);
 int nbCommodites(Reseau *R);
 void afficheReseauSVG(Reseau *R, char* nomInstance);
+
+
+
+//fonction elementaire ajouter par moi
+CellNoeud * insererNoeud(CellNoeud * liste_nd, CellNoeud *insere);
 #endif
 
