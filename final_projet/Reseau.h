@@ -41,6 +41,6 @@ void afficheReseauSVG(Reseau *R, char* nomInstance);
 
 
 //fonction elementaire ajouter par moi
-CellNoeud * insererNoeud(CellNoeud * liste_nd, CellNoeud *insere);
+CellNoeud * insererNoeud(CellNoeud * liste_nd, Noeud *insere);
 #endif
 

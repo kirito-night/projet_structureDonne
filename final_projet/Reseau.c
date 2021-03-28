@@ -25,24 +25,29 @@ Noeud* rechercheCreeNoeudListe(Reseau *R, double x, double y)
     new_cell->suiv = R->noeuds;
     R->noeuds = new_cell;
     R->nbNoeuds += 1;
-    printf("point n'est pas dedans \n")
+    printf("point n'est pas dedans \n");
     return nouveau;
 
 
 }
 
-CellNoeud * insererNoeud(CellNoeud * liste_nd, CellNoeud *insere){
+CellNoeud * insererNoeud(CellNoeud * liste_nd, Noeud *insere){
     CellNoeud * tmp = liste_nd;
-    while(tmp){
-        if(tmp->nd->x == insere->nd->x && tmp->nd->y == insere->nd->y){
+    while(tmp && tmp->nd != insere){
+        /*if(tmp->nd== insere){
             printf("deja dans la liste\n");
             return liste_nd;
-        }
+        }*/
         tmp = tmp->suiv;
         
     }
-    insere->suiv=  liste_nd;
-    liste_nd = insere;
+    if(tmp == NULL){
+        CellNoeud *new  = (CellNoeud *)malloc(sizeof(CellNoeud)); 
+        new->nd = insere;
+        new->suiv = liste_nd;
+        liste_nd = new;
+
+    }
     printf("element est insere\n");
     return liste_nd; 
 }
@@ -87,8 +92,8 @@ Reseau* reconstitueReseauListe(Chaines *C){
     
 
     return res;
-}*/
-
+}
+*/
 
 Reseau* reconstitueReseauListe(Chaines *C){
     //double LtotC = longueurTotale(C);
@@ -104,23 +109,27 @@ Reseau* reconstitueReseauListe(Chaines *C){
     CellCommodite *liste_commo = NULL;
     for(int i = 0 ;  i < C->nbChaines ; i++){
         CellPoint *tmp_ptn = tmp_chaine->points;
-        CellPoint *tmp_ptn_suiv = tmp_ptn->suiv;
-        while(tmp_ptn_suiv){
+        Noeud *premier =NULL;
+        Noeud *prec = NULL;
+        while(tmp_ptn){
             Noeud* nouveau = rechercheCreeNoeudListe(res,tmp_ptn->x,tmp_ptn->y);
-            Noeud* nouveau_suiv = rechercheCreeNoeudListe(res,tmp_ptn_suiv->x,tmp_ptn_suiv->y);
-            CellNoeud *v_inserer = res->noeuds; //l'element suivant se trouve forcement en tete de liste car insertion en tete
-            nouveau->voisins = insererNoeud(nouveau->voisins , v_inserer); // pas sur pour la liste des voisin d'un nd
-            
-            
+            if(premier ==NULL){
+                premier = nouveau;
+            }
+            if(prec != NULL){
+                prec->voisins = insererNoeud(prec->voisins,nouveau);
+                nouveau->voisins = insererNoeud(nouveau->voisins , prec);
+
+            }
+            prec = nouveau;
             
 
-            tmp_ptn = tmp_ptn_suiv;
-            tmp_ptn_suiv = tmp_ptn_suiv->suiv;
-
+            tmp_ptn = tmp_ptn->suiv;
+           
         }
         CellCommodite *commo = (CellCommodite*)malloc(sizeof(CellCommodite));
-        commo->extrA = rechercheCreeNoeudListe(res,tmp_chaine->points->x, tmp_chaine->points->y);
-        commo->extrB = rechercheCreeNoeudListe(res,tmp_ptn->x,tmp_ptn->y);
+        commo->extrA = premier ;   
+        commo->extrB = prec ; //rechercheCreeNoeudListe(res,prec->x,prec->y)
         commo->suiv =liste_commo;
         liste_commo= commo;
 
@@ -143,24 +152,22 @@ int nbCommodites(Reseau *R){
     return res;
 }
 
-/*int nbLiaisons(Reseau *R){
-    CellNoeud *l = R->noeuds;
-    int res = 0;
-    while(l){
-        res+=1;
-        l = l->suiv;
-    }
-    return res -1;
-}*/
+
+
 
 int nbLiaisons(Reseau *R){
     CellNoeud *l = R->noeuds;
     int res = 0;
     while(l){
-        res+=1;
-        l = l->suiv;
+        
+        CellNoeud *liste_voisin =  l->nd->voisins;
+        while (liste_voisin){
+            res+=1;
+            liste_voisin = liste_voisin->suiv;
+        }
+        l= l->suiv;
     }
-    return res -1;
+    return res /2 ;
 }
 
 
@@ -170,18 +177,35 @@ void ecrireReseau(Reseau *R, FILE *f){
     fprintf(f,"NbNoeud :  %d\n NbLiaisons :  %d\n Nbcommodites :  %d\nGamma :  %d\n\n", R->nbNoeuds , nbl ,nbc, R->gamma);
     CellNoeud *liste_nd = R->noeuds;
     
+
+    //boucle pour les nb noeud 
     for(int  i = 0 ; i< R->nbNoeuds ; i++){
         fprintf(f,"v %d %.2f %.2f \n", liste_nd->nd->num,liste_nd->nd->x, liste_nd->nd->y);
         liste_nd = liste_nd->suiv;
     }
     fprintf(f, "\n");
+
+
     liste_nd = R->noeuds;
-    CellNoeud * liste_nd_suiv = liste_nd->suiv;
-    for(int j = 0 ; j < nbl ; j++){
-        fprintf(f,"l %d %d \n ", liste_nd->nd->num, liste_nd_suiv->nd->num);
-        liste_nd = liste_nd_suiv;
-        liste_nd_suiv = liste_nd_suiv ->suiv;
+    
+    //CellNoeud * liste_nd_suiv = liste_nd->suiv;
+    CellNoeud * liste_voisin = NULL;
+    for(int j = 0 ; j < nbl ;){
+        liste_voisin = liste_nd->nd->voisins;
+        
+        
+        while(liste_voisin){
+            if(liste_voisin->nd->num < liste_nd->nd->num){
+                fprintf(f,"l %d %d \n ", liste_voisin->nd->num, liste_nd->nd->num );
+                j++;
+            }
+            
+            liste_voisin = liste_voisin->suiv;
+        }
+        liste_nd = liste_nd->suiv;
+         
     }
+    
     
     fprintf(f, "\n");
     CellCommodite *liste_commo = R->commodites;

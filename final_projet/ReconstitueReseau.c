@@ -32,6 +32,7 @@ int main(int argc , char *argv[]){
     Reseau *res = reconstitueReseauListe(c);
     afficheReseauSVG(res,"affichageReseau");
     FILE *fw = fopen("ReseauEcrite", "w");
+    
     ecrireReseau(res,fw);
     fclose(fw);
 
