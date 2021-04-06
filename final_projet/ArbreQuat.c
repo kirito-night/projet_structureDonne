@@ -220,14 +220,14 @@ Noeud* rechercheCreeNoeudArbre(Reseau* R, ArbreQuat** a, ArbreQuat* parent, doub
 
 }
 
-
+/*
 CellNoeud * insererNoeud(CellNoeud * liste_nd, Noeud *insere){
     CellNoeud * tmp = liste_nd;
     while(tmp && tmp->nd != insere){
-        /*if(tmp->nd== insere){
+        if(tmp->nd== insere){
             printf("deja dans la liste\n");
             return liste_nd;
-        }*/
+        }
         tmp = tmp->suiv;
         
     }
@@ -240,7 +240,7 @@ CellNoeud * insererNoeud(CellNoeud * liste_nd, Noeud *insere){
     }
     printf("element est insere\n");
     return liste_nd; 
-}
+}*/
 Reseau * reconstitueReseauArbre(Chaines *C){
     double xmin,ymin,xmax,ymax; 
     chaineCoordMinMax(C,&xmin,&ymax,&xmax,&ymax);

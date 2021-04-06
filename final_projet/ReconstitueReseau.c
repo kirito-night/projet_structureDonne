@@ -4,6 +4,7 @@
 #include<stdlib.h>
 #include"SVGwriter.h"
 #include "Hachage.h"
+#include"ArbreQuat.h"
 
 #define TAILLE 50
 void menu(){
@@ -79,7 +80,11 @@ int main(int argc , char *argv[]){
     case 2 : ;
         Reseau *resH = reconstitueReseauHachage(c, TAILLE);
         afficheReseauSVG(resH, "affichageReseauHachage");
-        break ; 
+        break ;
+    case 3 :
+        Reseau* resABR  =reconstitueReseauArbre(c);
+        afficheReseauSVG (resABR , "affchageReseauArbre");
+        break; 
     
     default:
         printf("veuillez suivre l'indication du menu");

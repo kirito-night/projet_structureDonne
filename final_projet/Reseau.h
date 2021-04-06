@@ -57,5 +57,17 @@ int fonctionHachage(int cle, int m);
 Noeud* rechercheCreeNoeudHachage(Reseau* R, TableHachage *H, double x ,double y);
 CellNoeud * insererNoeud(CellNoeud * liste_nd, Noeud *insere);
 Reseau * reconstitueReseauHachage(Chaines *C, int M);
+
+
+
+
+//fonction pour les arbres quat
+#include "ArbreQuat.h"
+
+void chaineCoordMinMax(Chaines* C, double* xmin, double* ymin, double* xmax, double* ymax);
+ArbreQuat* creerArbreQuat(double xc, double yc, double coteX,double coteY);
+void insererNoeudArbre(Noeud *n, ArbreQuat** a, ArbreQuat* parent);
+Noeud* rechercheCreeNoeudArbre(Reseau* R, ArbreQuat** a, ArbreQuat* parent, double x, double y);
+Reseau * reconstitueReseauArbre(Chaines *C);
 #endif
 
