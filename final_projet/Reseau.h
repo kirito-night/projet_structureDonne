@@ -1,7 +1,7 @@
 #ifndef __RESEAU_H__
 #define __RESEAU_H__
 #include "Chaine.h"
-//#include "Hachage.h"
+#include "Hachage.h"
 
 typedef struct noeud Noeud;
 
@@ -43,12 +43,12 @@ void afficheReseauSVG(Reseau *R, char* nomInstance);
 
 //fonction elementaire ajouter par moi
 CellNoeud * insererNoeud(CellNoeud * liste_nd, Noeud *insere);
-
+/*
 typedef struct table {
     int nE;
     int taille; 
     CellNoeud **tab ; // le table hachage
-}TableHachage;
+}TableHachage;*/
 
 //fonction pour les tables d'hachage
 

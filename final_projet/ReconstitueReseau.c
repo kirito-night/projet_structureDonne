@@ -3,7 +3,7 @@
 #include<stdio.h>
 #include<stdlib.h>
 #include"SVGwriter.h"
-//#include "Hachage.h"
+#include "Hachage.h"
 
 #define TAILLE 50
 void menu(){

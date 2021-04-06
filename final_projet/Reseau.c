@@ -3,7 +3,7 @@
 #include <stdlib.h>
 #include "SVGwriter.h"
 #include<math.h>
-//#include"Hachage.h"
+#include"Hachage.h"
 Noeud* rechercheCreeNoeudListe(Reseau *R, double x, double y)
 {
     CellNoeud* temp_noeud = R->noeuds;
