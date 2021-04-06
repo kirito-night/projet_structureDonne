@@ -20,7 +20,7 @@ ReconstitueReseau.o : ReconstitueReseau.c SVGwriter.o
 ReconstitueReseau : ReconstitueReseau.o Reseau.o SVGwriter.o
 	gcc SVGwriter.o Reseau.o Chaine.o ReconstitueReseau.o -o ReconstitueReseau $(CFLAGS) -lm
 
-Reseau.o : Reseau.c SVGwriter.o
+Reseau.o : Reseau.c SVGwriter.o 
 	gcc -c Reseau.c $(CFLAGS)
 clean : 
 	rm  -f *.o $(EX)
