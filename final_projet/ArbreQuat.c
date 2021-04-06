@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include "ArbreQuat.h"
 #include "Chaine.h"
+#include "Reseau.h"
 
 void chaineCoordMinMax(Chaines* C, double* xmin, double* ymin, double* xmax, double* ymax)
 {
@@ -217,4 +218,85 @@ Noeud* rechercheCreeNoeudArbre(Reseau* R, ArbreQuat** a, ArbreQuat* parent, doub
         }
     }
 
+}
+
+
+CellNoeud * insererNoeud(CellNoeud * liste_nd, Noeud *insere){
+    CellNoeud * tmp = liste_nd;
+    while(tmp && tmp->nd != insere){
+        /*if(tmp->nd== insere){
+            printf("deja dans la liste\n");
+            return liste_nd;
+        }*/
+        tmp = tmp->suiv;
+        
+    }
+    if(tmp == NULL){
+        CellNoeud *new  = (CellNoeud *)malloc(sizeof(CellNoeud)); 
+        new->nd = insere;
+        new->suiv = liste_nd;
+        liste_nd = new;
+
+    }
+    printf("element est insere\n");
+    return liste_nd; 
+}
+Reseau * reconstitueReseauArbre(Chaines *C){
+    double xmin,ymin,xmax,ymax; 
+    chaineCoordMinMax(C,&xmin,&ymax,&xmax,&ymax);
+    ArbreQuat *abr = creerArbreQuat(xmax + xmin / 2, ymax+ymin / 2,xmax - xmin , ymax-ymin);
+    Reseau * res = (Reseau *)malloc(sizeof(Reseau));
+    res->gamma = C->gamma;
+    res->nbNoeuds = 0;
+    res ->commodites = NULL;
+    res->noeuds = NULL;
+
+    CellChaine *tmp_chaine = C->chaines;
+    CellCommodite *liste_commo  =NULL ; 
+
+    for(int i = 0 ;  i < C->nbChaines ; i++){
+        CellPoint *tmp_ptn = tmp_chaine->points;
+        Noeud *premier =NULL;
+        Noeud *prec = NULL;
+        while(tmp_ptn){
+            Noeud * nouveau = NULL;
+            if(tmp_ptn->x < abr->xc){
+                if(tmp_ptn ->y < abr->yc){
+                   nouveau = rechercheCreeNoeudArbre(res,&abr->so,abr,tmp_ptn->x, tmp_ptn->y);
+                }
+                else{
+                    nouveau = rechercheCreeNoeudArbre(res,&abr->no,abr,tmp_ptn->x, tmp_ptn->y);
+                }
+            }else{
+                if(tmp_ptn ->y < abr->yc){
+                   nouveau = rechercheCreeNoeudArbre(res,&abr->se,abr,tmp_ptn->x, tmp_ptn->y);
+                }else{
+                   nouveau = rechercheCreeNoeudArbre(res,&abr->ne,abr,tmp_ptn->x, tmp_ptn->y);
+                }
+            }
+
+            if(premier ==NULL){
+                premier = nouveau;
+            }
+            if(prec != NULL){
+                prec->voisins = insererNoeud(prec->voisins,nouveau);
+                nouveau->voisins = insererNoeud(nouveau->voisins , prec);
+
+            }
+
+            prec =nouveau;
+
+            tmp_ptn = tmp_ptn->suiv;
+
+        }
+        CellCommodite *commo = (CellCommodite *)malloc (sizeof(CellCommodite));
+        commo->extrA = premier;
+        commo->extrB = prec;
+        commo->suiv = liste_commo;
+        liste_commo = commo;
+    }
+
+    res->commodites = liste_commo;
+
+    return res;
 }

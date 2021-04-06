@@ -3,9 +3,6 @@
 #include "Reseau.h"
 
 
-
-
-
 typedef struct table {
     int nE;
     int taille; 

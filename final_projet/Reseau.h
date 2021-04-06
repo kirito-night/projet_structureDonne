@@ -1,7 +1,7 @@
 #ifndef __RESEAU_H__
 #define __RESEAU_H__
 #include "Chaine.h"
-#include "Hachage.h"
+
 
 typedef struct noeud Noeud;
 
@@ -51,7 +51,7 @@ typedef struct table {
 }TableHachage;*/
 
 //fonction pour les tables d'hachage
-
+#include "Hachage.h"
 int fonctionCle(double x, double y);
 int fonctionHachage(int cle, int m);
 Noeud* rechercheCreeNoeudHachage(Reseau* R, TableHachage *H, double x ,double y);
