@@ -1,5 +1,8 @@
 #include "Graphe.h"
 #include <stdlib.h>
+#include "Struct_File.h"
+
+
 Sommet* InitieSommet(int num , double x, double y){
     Sommet* res =  (Sommet *)malloc(sizeof(Sommet));
     res->num = num;
@@ -8,7 +11,7 @@ Sommet* InitieSommet(int num , double x, double y){
     res->L_voisin = NULL;
     return res;
 }
-
+/*
 Graphe *creerGrapheTest(Reseau *r){
     Graphe *resG = (Graphe *)malloc(sizeof(Graphe));
     resG->gamma = r->gamma;
@@ -77,14 +80,14 @@ Graphe *creerGrapheTest(Reseau *r){
 
 
     return resG;
-}
+}*/
 
 
 Graphe *creerGraphe(Reseau *r){
     Graphe *resG = (Graphe *)malloc(sizeof(Graphe));
     resG->gamma = r->gamma;
     resG->nbsom = r->nbNoeuds;
-    resG->nbcommod = 0;
+    resG->nbcommod = nbCommodites(r);
     resG->T_som = (Sommet**) malloc(sizeof(Sommet*)*resG->nbsom);
     memset(resG->T_som, 0,sizeof(Sommet*)*resG->nbsom );
     resG->T_commod =(Commod *)malloc(sizeof(Commod) * resG->nbcommod);
@@ -113,14 +116,19 @@ Graphe *creerGraphe(Reseau *r){
 
     CellCommodite *l_commo = r->commodites;
     
+    int cpt_commod = 0;
     while(l_commo ){ //on s'en occupe de la commodite
-        Commod* new_commo = (Commod*) malloc(sizeof(Commod));
+        
+        /*Commod* new_commo = (Commod*) malloc(sizeof(Commod));
         new_commo->e1 = l_commo->extrA;
         new_commo->e2 = l_commo->extrB;
-        (resG->T_commod)[resG->nbcommod] = *new_commo;
+        (resG->T_commod)[resG->nbcommod] = *new_commo;*/
+
+        (resG->T_commod)[cpt_commod].e1 = l_commo->extrA;
+        (resG->T_commod)[cpt_commod].e2 = l_commo->extrB;
 
         l_commo = l_commo->suiv;
-        resG->nbcommod +=1;
+        cpt_commod +=1;
 
 
     }
@@ -130,3 +138,55 @@ Graphe *creerGraphe(Reseau *r){
     
     return resG;
 }
+
+int plus_petit_nbChaine (Graphe* g, int u , int v){
+    if (u == v){
+        return 0 ; // le chemin nulle 
+    }
+    
+    // pour la taille du tabeau a voir si ajouter +1 , ou bien de faire -1 sur les indice
+    int visit[g->nbsom]; // on cree un tableau pour verifier si un noeud est deja visite ou non 
+
+    memset(visit, 0 , sizeof(int) * g->nbsom);
+
+    int distance[g->nbsom];
+    for(int i = 0 ; i < g->nbsom ; i++){
+        distance[i] = 0;
+    }
+
+    S_file *F  = (S_file*) malloc(sizeof(S_file));
+    Init_file(F);
+    visit[u-1] = 1;
+    distance[u-1] = 0; // verification pour etre sur
+    enfile(F,u);
+
+
+    while(!(estFileVide(F))){
+        int sommet_present = defile(F); 
+        if(sommet_present = v){
+            assert(distance[sommet_present -1] == distance[v-1]);
+            return distance[v-1];
+        }
+
+        Cellule_arete * cour = g->T_som[sommet_present -1]->L_voisin;
+        while (cour != NULL)
+        {
+            int sommet_voisin = cour->a->v;
+            if(visit[sommet_voisin -1] == 0){
+                visit[sommet_voisin -1] =  1 ;
+                enfile(F,sommet_voisin);
+                distance[sommet_voisin -1] = distance[sommet_present -1] +1;
+
+            }
+            cour = cour->suiv;
+        }
+        
+
+        
+    }
+    
+    return -1 ; // pas de chemin pour aller de u a v 
+
+}
+
+
