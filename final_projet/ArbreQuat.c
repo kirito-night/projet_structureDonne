@@ -3,17 +3,23 @@
 #include "ArbreQuat.h"
 #include "Chaine.h"
 #include "Reseau.h"
+#include<math.h>
+
+
 
 void chaineCoordMinMax(Chaines* C, double* xmin, double* ymin, double* xmax, double* ymax)
 {
+    if (C==NULL || C->chaines==NULL){
+        printf("Pas de chaines");
+        return;
+    }
     CellChaine* CellTemp = C->chaines;
-    CellPoint* p = CellTemp->points;
-    *xmin = p->x, *xmax = p->x, *ymax = p->y, *ymin = p->y; //Problème ici
+    *xmin = INFINITY, *xmax = -INFINITY, *ymax = -INFINITY, *ymin = INFINITY; 
 
     while(CellTemp->suiv!=NULL)
     {
-        p = CellTemp->points;
-        while(p->suiv!=NULL)
+        CellPoint* p = CellTemp->points;
+        while(p!=NULL)
         {
             if(*xmin > p->x){
                 *xmin = p->x;
@@ -187,16 +193,16 @@ Noeud* rechercheCreeNoeudArbre(Reseau* R, ArbreQuat** a, ArbreQuat* parent, doub
         
         if(x < (*a) ->xc){ //le cas ou le noeud n'est pas dans l'arbre
             if(y < (*a) ->yc){
-                rechercheCreeNoeudArbre(R, &(*a)->so, *a, x, y );
+                return rechercheCreeNoeudArbre(R, &(*a)->so, *a, x, y );
             }else{
-                rechercheCreeNoeudArbre(R, &(*a)->no, *a, x, y );
+                return rechercheCreeNoeudArbre(R, &(*a)->no, *a, x, y );
             }
         }else{
             if(y < (*a) ->yc){
-                 rechercheCreeNoeudArbre(R, &(*a)->se, *a, x, y );
+                return  rechercheCreeNoeudArbre(R, &(*a)->se, *a, x, y );
             }
             else{
-                rechercheCreeNoeudArbre(R, &(*a)->ne, *a, x, y );
+                return rechercheCreeNoeudArbre(R, &(*a)->ne, *a, x, y );
             }
         }
     }
@@ -204,16 +210,16 @@ Noeud* rechercheCreeNoeudArbre(Reseau* R, ArbreQuat** a, ArbreQuat* parent, doub
     if((*a)->noeud == NULL && *a != NULL){
          if(x < (*a) ->xc){ //le cas ou le noeud n'est pas dans l'arbre
             if(y < (*a) ->yc){
-                rechercheCreeNoeudArbre(R, &(*a)->so, *a, x, y );
+                return rechercheCreeNoeudArbre(R, &(*a)->so, *a, x, y );
             }else{
-                rechercheCreeNoeudArbre(R, &(*a)->no, *a, x, y );
+                return rechercheCreeNoeudArbre(R, &(*a)->no, *a, x, y );
             }
         }else{
             if(y < (*a) ->yc){
-                 rechercheCreeNoeudArbre(R, &(*a)->se, *a, x, y );
+                return  rechercheCreeNoeudArbre(R, &(*a)->se, *a, x, y );
             }
             else{
-                rechercheCreeNoeudArbre(R, &(*a)->ne, *a, x, y );
+                return rechercheCreeNoeudArbre(R, &(*a)->ne, *a, x, y );
             }
         }
     }

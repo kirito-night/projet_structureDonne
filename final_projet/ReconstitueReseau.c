@@ -13,9 +13,9 @@ void menu(){
     printf("entrez 3 pour la reconstitution de reseau par arbre quat\n");
 
 }
-/*
+
 int main(int argc , char *argv[]){
-    if(argc != 3 ){
+    /*if(argc != 3 ){
         printf("veuillez entrer le nom du fichier .cha et le un entier");
     }
     char *nomfic = argv[1];
@@ -25,12 +25,12 @@ int main(int argc , char *argv[]){
     {
         printf("Le fichier n'as pas pu être ouvert\n");
         exit(1);
-    }
+    }*/
 
     FILE *f = fopen("00014_burma.cha","r");
     
-    FILE *chaines = fopen("chainesEcrites.txt","w");
-    if(chaines == NULL)
+    //FILE *chaines = fopen("chainesEcrites.txt","w");
+    if(f == NULL)
     {
         printf("Le fichier n'as pas pu être ouvert\n");
         exit(2);
@@ -39,18 +39,19 @@ int main(int argc , char *argv[]){
     Chaines* c = lectureChaines(f);
 
 
-    Reseau *res = reconstitueReseauListe(c);
-    afficheReseauSVG(res,"affichageReseau");
+    Reseau* resABR  =reconstitueReseauArbre(c);
+    afficheReseauSVG (resABR , "affchageReseauArbre");
+    printf("le reseau est affiche\n");
     FILE *fw = fopen("ReseauEcrite", "w");
     
-    ecrireReseau(res,fw);
+    ecrireReseau(resABR,fw);
     fclose(fw);
-
+    fclose(f);
 
     return 0;
-}*/
+}
 
-
+/*
 int main(int argc , char *argv[]){
     menu();
     if(argc != 3 ){
@@ -81,7 +82,7 @@ int main(int argc , char *argv[]){
         Reseau *resH = reconstitueReseauHachage(c, TAILLE);
         afficheReseauSVG(resH, "affichageReseauHachage");
         break ;
-    case 3 :
+    case 3 : ;
         Reseau* resABR  =reconstitueReseauArbre(c);
         afficheReseauSVG (resABR , "affchageReseauArbre");
         break; 
@@ -89,6 +90,8 @@ int main(int argc , char *argv[]){
     default:
         printf("veuillez suivre l'indication du menu");
         break;
+
     }
 
 }
+*/

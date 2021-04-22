@@ -354,14 +354,17 @@ Reseau * reconstitueReseauHachage(Chaines *C, int M){
 
 void chaineCoordMinMax(Chaines* C, double* xmin, double* ymin, double* xmax, double* ymax)
 {
+    if (C==NULL || C->chaines==NULL){
+        printf("Pas de chaines");
+        return;
+    }
     CellChaine* CellTemp = C->chaines;
-    CellPoint* p = CellTemp->points;
-    *xmin = p->x, *xmax = p->x, *ymax = p->y, *ymin = p->y; //Problème ici
+    *xmin = INFINITY, *xmax = -INFINITY, *ymax = -INFINITY, *ymin = INFINITY; 
 
     while(CellTemp->suiv!=NULL)
     {
-        p = CellTemp->points;
-        while(p->suiv!=NULL)
+        CellPoint* p = CellTemp->points;
+        while(p!=NULL)
         {
             if(*xmin > p->x){
                 *xmin = p->x;
@@ -397,6 +400,8 @@ ArbreQuat* creerArbreQuat(double xc, double yc, double coteX,double coteY)
 
         return new;
     }
+
+
 void insererNoeudArbre(Noeud *n, ArbreQuat** a, ArbreQuat* parent){
     
     if(*a == NULL){
@@ -408,7 +413,7 @@ void insererNoeudArbre(Noeud *n, ArbreQuat** a, ArbreQuat* parent){
         /*
         if(n->x < parent->xc && n->y < parent->yc){ //le cas sud ouest
 
-            new_x = xc - xc/2;
+            //new_x = xc - xc/2;
             ArbreQuat* son =  creerArbreQuat(xc - xc/2, yc - yc/2, new_coteX, new_coteY);
             son->noeud = n;
             parent->so = son;
@@ -430,78 +435,69 @@ void insererNoeudArbre(Noeud *n, ArbreQuat** a, ArbreQuat* parent){
         }
         */
 
+
        if(n->x < parent->xc){
-           new_x = xc - xc/2 ;
+           new_x = xc - new_coteX/2 ;
        }else{
-           new_x  = xc+ xc/2 ;
+           new_x  = xc+ new_coteX/2 ;
        }
        
        if(n->y < parent->yc){
-           new_y = yc - yc/2;
+           new_y = yc - new_coteY/2;
        }else{
-           new_y = yc +yc/2;
+           new_y = yc +new_coteY/2;
        }
 
-       ArbreQuat* son =  creerArbreQuat(new_x, new_y, new_coteX, new_coteY);
+       /*ArbreQuat* son =  creerArbreQuat(new_x, new_y, new_coteX, new_coteY);
        son->noeud = n;
-       *a = son;
+       *a = son;*/
+      (*a) = creerArbreQuat(new_x, new_y, new_coteX, new_coteY);
+        (*a)->noeud = n;
+
     }
+    else{
+        if((*a)->noeud != NULL ){// pour les feuille 
+            Noeud * tmp  = (*a)->noeud ; 
+            (*a)->noeud = NULL;
+            if(tmp->x < (*a)->xc){
+                if(tmp->y < (*a)->yc){ //inserer le noeud a
+                    insererNoeudArbre(tmp, &((*a)->so),*a );
+                }   
+                else{
+                    insererNoeudArbre(tmp, &((*a)->no),*a );
+                }   
+            }else{
+                if(tmp->y < (*a)->yc){
+                    insererNoeudArbre(tmp, &((*a)->se),*a );
+                }
+                else{
+                    insererNoeudArbre(tmp, &((*a)->ne), *a);
+                }   
+            }
 
-    if((*a)->noeud != NULL){
-        Noeud * tmp  = (*a)->noeud ; 
+            
+           
+        }
 
-        if(tmp->x < (*a)->xc){
-            if(tmp->y < (*a)->yc){
-                insererNoeudArbre(tmp, &(*a)->so,*a );
+        //if((*a) -> noeud == NULL && *a != NULL){
+        if(n->x < (*a)->xc){ // inserer le noeud n 
+            if(n->y < (*a)->yc){
+                insererNoeudArbre(n, &((*a)->so),*a );
             }
             else{
-                insererNoeudArbre(tmp, &(*a)->no,*a );
+                insererNoeudArbre(n, &((*a)->no),*a );
             }
         }else{
-            if(tmp->y < (*a)->yc){
-                insererNoeudArbre(tmp, &(*a)->se,*a );
-            }
-            else{
-                insererNoeudArbre(tmp, &(*a)->ne, *a);
-            }
-        }
-
-        if(n->x < (*a)->xc){
             if(n->y < (*a)->yc){
-                insererNoeudArbre(n, &(*a)->so,*a );
+                insererNoeudArbre(n, &((*a)->se),*a );
             }
             else{
-                insererNoeudArbre(n, &(*a)->no,*a );
-            }
-        }else{
-            if(n->y < (*a)->yc){
-                insererNoeudArbre(n, &(*a)->se,*a );
-            }
-            else{
-                insererNoeudArbre(n, &(*a)->ne, *a);
-            }
+                insererNoeudArbre(n, &((*a)->ne), *a);
+            }   
         }
-        (*a)->noeud = NULL;
     }
-
-    if((*a) -> noeud == NULL && *a != NULL){
-        if(n->x < parent->xc && n->y < parent->yc){
-            insererNoeudArbre(n, &(*a)->so,*a);
-        }
-
-        if(n->x > parent->xc && n->y > parent->yc){
-             insererNoeudArbre(n, &(*a)->ne,*a);
-        }
-        if(n->x < parent->xc && n->y > parent->yc){
-            insererNoeudArbre(n, &(*a)->no,*a);
-        }
-        if(n->x > parent->xc && n->y < parent->yc){
-            insererNoeudArbre(n, &(*a)->se,*a);
-        }
-
-    }
-
 }
+
 
 
 
@@ -526,53 +522,92 @@ Noeud* rechercheCreeNoeudArbre(Reseau* R, ArbreQuat** a, ArbreQuat* parent, doub
         insererNoeudArbre(new, a,parent);
         return new; 
     }
+    else{
 
-    if((*a)-> noeud != NULL){
-        Noeud *tmp_noeud = (*a)-> noeud; 
-        if(tmp_noeud -> x == x && tmp_noeud ->y == y){ //le cas ou le noeud est dans l'arbre
-            return tmp_noeud;
+    
+
+        if((*a)-> noeud != NULL){ // pour une feuille
+            Noeud *tmp_noeud = (*a)-> noeud; 
+            if(fabs(tmp_noeud -> x -x) < 0.00001 && fabs(tmp_noeud ->y - y)< 0.00001){ //le cas ou le noeud est dans l'arbre
+                return tmp_noeud;
+            }
+            else{
+                Noeud *new  = (Noeud *) malloc (sizeof(Noeud));
+                new->x = x;
+                new->y = y;
+                new->num = R->nbNoeuds + 1;
+                new->voisins = NULL;
+
+                CellNoeud *new_cell = (CellNoeud *) malloc(sizeof(CellNoeud));
+                new_cell ->nd = new; 
+                new_cell ->suiv = R->noeuds ;
+                R->noeuds  =new_cell;
+                R->nbNoeuds +=1 ;
+
+                
+                
+                insererNoeudArbre(new, a,parent);
+                
+
+                return new; 
+            }
+            //    une modification dont j'ai pense qui suit enonce  mais seg fault 
+            
+            
+            
+
+            /*
+            if(x < (*a) ->xc){ //le cas ou le noeud n'est pas dans l'arbre
+                if(y < (*a) ->yc){
+                    return rechercheCreeNoeudArbre(R, &(*a)->so, *a, x, y );
+                }else{
+                    return rechercheCreeNoeudArbre(R, &(*a)->no, *a, x, y );
+                }
+            }else{
+                if(y < (*a) ->yc){
+                    return  rechercheCreeNoeudArbre(R, &(*a)->se, *a, x, y );
+                }
+                else{
+                    return rechercheCreeNoeudArbre(R, &(*a)->ne, *a, x, y );
+                }
+            }*/
+
+        }else{
+                //f((*a)->noeud == NULL && *a != NULL){ // cas des noeud interne 
+                if(x < (*a) ->xc){ 
+                    if(y < (*a) ->yc){
+                        return rechercheCreeNoeudArbre(R, &(*a)->so, *a, x, y );
+                    }else{
+                        return rechercheCreeNoeudArbre(R, &(*a)->no, *a, x, y );
+                    }
+                }else{
+                    if(y < (*a) ->yc){
+                        return  rechercheCreeNoeudArbre(R, &(*a)->se, *a, x, y );
+                    }
+                    else{
+                        return rechercheCreeNoeudArbre(R, &(*a)->ne, *a, x, y );
+                    }
+                }
+            //}
         }
+
         
-        if(x < (*a) ->xc){ //le cas ou le noeud n'est pas dans l'arbre
-            if(y < (*a) ->yc){
-                rechercheCreeNoeudArbre(R, &(*a)->so, *a, x, y );
-            }else{
-                rechercheCreeNoeudArbre(R, &(*a)->no, *a, x, y );
-            }
-        }else{
-            if(y < (*a) ->yc){
-                 rechercheCreeNoeudArbre(R, &(*a)->se, *a, x, y );
-            }
-            else{
-                rechercheCreeNoeudArbre(R, &(*a)->ne, *a, x, y );
-            }
-        }
     }
-
-    if((*a)->noeud == NULL && *a != NULL){
-         if(x < (*a) ->xc){ //le cas ou le noeud n'est pas dans l'arbre
-            if(y < (*a) ->yc){
-                rechercheCreeNoeudArbre(R, &(*a)->so, *a, x, y );
-            }else{
-                rechercheCreeNoeudArbre(R, &(*a)->no, *a, x, y );
-            }
-        }else{
-            if(y < (*a) ->yc){
-                 rechercheCreeNoeudArbre(R, &(*a)->se, *a, x, y );
-            }
-            else{
-                rechercheCreeNoeudArbre(R, &(*a)->ne, *a, x, y );
-            }
-        }
-    }
+    return NULL;//jamais atteinte
 
 }
 
 
+
+
+
+
+
+
 Reseau * reconstitueReseauArbre(Chaines *C){
     double xmin,ymin,xmax,ymax; 
-    chaineCoordMinMax(C,&xmin,&ymax,&xmax,&ymax);
-    ArbreQuat *abr = creerArbreQuat(xmax + xmin / 2, ymax+ymin / 2,xmax - xmin , ymax-ymin);
+    chaineCoordMinMax(C,&xmin,&ymin,&xmax,&ymax);
+    ArbreQuat *abr = creerArbreQuat(xmin + ((xmax - xmin) / 2.0), ymin + ((ymax-ymin) / 2.0) ,xmax - xmin , ymax-ymin);
     Reseau * res = (Reseau *)malloc(sizeof(Reseau));
     res->gamma = C->gamma;
     res->nbNoeuds = 0;
@@ -587,21 +622,8 @@ Reseau * reconstitueReseauArbre(Chaines *C){
         Noeud *premier =NULL;
         Noeud *prec = NULL;
         while(tmp_ptn){
-            Noeud * nouveau = NULL;
-            if(tmp_ptn->x < abr->xc){
-                if(tmp_ptn ->y < abr->yc){
-                   nouveau = rechercheCreeNoeudArbre(res,&abr->so,abr,tmp_ptn->x, tmp_ptn->y);
-                }
-                else{
-                    nouveau = rechercheCreeNoeudArbre(res,&abr->no,abr,tmp_ptn->x, tmp_ptn->y);
-                }
-            }else{
-                if(tmp_ptn ->y < abr->yc){
-                   nouveau = rechercheCreeNoeudArbre(res,&abr->se,abr,tmp_ptn->x, tmp_ptn->y);
-                }else{
-                   nouveau = rechercheCreeNoeudArbre(res,&abr->ne,abr,tmp_ptn->x, tmp_ptn->y);
-                }
-            }
+            Noeud * nouveau = rechercheCreeNoeudArbre(res,&abr,NULL,tmp_ptn->x, tmp_ptn->y);
+            
 
             if(premier ==NULL){
                 premier = nouveau;
@@ -617,6 +639,9 @@ Reseau * reconstitueReseauArbre(Chaines *C){
             tmp_ptn = tmp_ptn->suiv;
 
         }
+
+        tmp_chaine= tmp_chaine->suiv;
+
         CellCommodite *commo = (CellCommodite *)malloc (sizeof(CellCommodite));
         commo->extrA = premier;
         commo->extrB = prec;
