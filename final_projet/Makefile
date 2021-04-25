@@ -1,4 +1,4 @@
-EX = ChainesMain ReconstitueReseau
+EX = ChainesMain ReconstitueReseau main_chiffre_compa main_graph_compa
 CFLAGS = -g -Wall -Wextra -pedantic
 all : $(EX)
 
@@ -22,6 +22,21 @@ ReconstitueReseau : ReconstitueReseau.o Reseau.o SVGwriter.o
 
 Reseau.o : Reseau.c SVGwriter.o 
 	gcc -c Reseau.c $(CFLAGS)
+
+comparaison.o : comparaison.c Chaine.o SVGwriter.o
+	gcc -c comparaison.c $(CFLAGS)
+
+main_chiffre_compa.o : main_chiffre_compa.c SVGwriter.o
+	gcc -c main_chiffre_compa.c $(CFLAGS) -lm
+
+main_graph_compa.o : main_graph_compa.c SVGwriter.o
+	gcc -c main_graph_compa.c $(CFLAGS) -lm SVGwriter.o
+
+main_chiffre_compa : comparaison.o Chaine.o Reseau.o main_chiffre_compa.o SVGwriter.o
+	gcc main_chiffre_compa.o comparaison.o Chaine.o Reseau.o -o main_chiffre_compa SVGwriter.o $(CFLAGS) -lm
+
+main_graph_compa : comparaison.o Chaine.o Reseau.o SVGwriter.o main_graph_compa.o
+	gcc main_graph_compa.o comparaison.o Chaine.o Reseau.o SVGwriter.o -o main_graph_compa  $(CFLAGS) -lm
 clean : 
 	rm  -f *.o $(EX)
 

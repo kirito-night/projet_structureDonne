@@ -36,6 +36,11 @@ typedef struct{
   Commod *T_commod; /* Tableau des commodites */
 } Graphe;
 
+Sommet* InitieSommet(int num , double x, double y);
 Graphe* creerGraphe(Reseau* r);
+int plus_petit_nbChaine (Graphe* g, int u , int v);
+ListeEntier chaine_arborescence(Graphe * g, int u , int  v);
+int reorganiseReseau(Reseau* r);
+
 
 #endif

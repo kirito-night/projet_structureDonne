@@ -7,26 +7,16 @@
 #include"ArbreQuat.h"
 
 #define TAILLE 50
+
 void menu(){
     printf("entrez 1 pour la reconstitution de reseau par liste\n");
     printf("entrez 2 pour la reconstitution de reseau par table d'hachage\n");
     printf("entrez 3 pour la reconstitution de reseau par arbre quat\n");
 
 }
-
+/*
 int main(int argc , char *argv[]){
-    /*if(argc != 3 ){
-        printf("veuillez entrer le nom du fichier .cha et le un entier");
-    }
-    char *nomfic = argv[1];
-    FILE *f = fopen(nomfic,"r");
-
-    if(f==NULL)
-    {
-        printf("Le fichier n'as pas pu être ouvert\n");
-        exit(1);
-    }*/
-
+    
     FILE *f = fopen("00014_burma.cha","r");
     
     //FILE *chaines = fopen("chainesEcrites.txt","w");
@@ -50,8 +40,10 @@ int main(int argc , char *argv[]){
 
     return 0;
 }
+*/
 
-/*
+
+
 int main(int argc , char *argv[]){
     menu();
     if(argc != 3 ){
@@ -77,14 +69,28 @@ int main(int argc , char *argv[]){
         FILE *fw = fopen("ReseauEcriteliste", "w");
         ecrireReseau(res,fw);
         fclose(fw);
+
+        printf("reseau afficher, veuiller regarder le fichier html affchagereseauListe\n");
         break;
     case 2 : ;
         Reseau *resH = reconstitueReseauHachage(c, TAILLE);
         afficheReseauSVG(resH, "affichageReseauHachage");
+       
+        FILE *fw_hachage = fopen("ReseauEcriteHachage", "w");
+        ecrireReseau(resH,fw_hachage);
+        fclose(fw_hachage);
+        printf("reseau afficher, veuiller regarder le fichier html affchagereseauHachage\n");
         break ;
     case 3 : ;
         Reseau* resABR  =reconstitueReseauArbre(c);
         afficheReseauSVG (resABR , "affchageReseauArbre");
+        
+        FILE *fw_arbre = fopen("ReseauEcriteArbre", "w");
+        ecrireReseau(resABR,fw_arbre);
+        fclose(fw_arbre);
+
+
+        printf("reseau afficher, veuiller regarder le fichier html affchagereseauArbre\n");
         break; 
     
     default:
@@ -93,5 +99,6 @@ int main(int argc , char *argv[]){
 
     }
 
+    return 0;
+
 }
-*/

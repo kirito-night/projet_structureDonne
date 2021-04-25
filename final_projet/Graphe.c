@@ -1,6 +1,7 @@
 #include "Graphe.h"
 #include <stdlib.h>
 #include "Struct_File.h"
+#include "Struct_Liste.h"
 
 
 Sommet* InitieSommet(int num , double x, double y){
@@ -164,14 +165,14 @@ int plus_petit_nbChaine (Graphe* g, int u , int v){
     while(!(estFileVide(F))){
         int sommet_present = defile(F); 
         if(sommet_present = v){
-            assert(distance[sommet_present -1] == distance[v-1]);
+            assert(distance[sommet_present -1] == distance[v-1]); //mettre en commnetaire 
             return distance[v-1];
         }
 
         Cellule_arete * cour = g->T_som[sommet_present -1]->L_voisin;
         while (cour != NULL)
         {
-            int sommet_voisin = cour->a->v;
+            int sommet_voisin = (sommet_present == cour->a->u) ?cour->a->v : cour->a->u;
             if(visit[sommet_voisin -1] == 0){
                 visit[sommet_voisin -1] =  1 ;
                 enfile(F,sommet_voisin);
@@ -190,3 +191,136 @@ int plus_petit_nbChaine (Graphe* g, int u , int v){
 }
 
 
+ListeEntier chaine_arborescence(Graphe * g, int u , int  v){
+     if (u == v){
+        return 0 ; // le chemin nulle 
+    }
+    
+    // pour la taille du tabeau faire -1 sur les indice car num commence de 1 et tableau commence de 0
+    int visit[g->nbsom]; // on cree un tableau pour verifier si un noeud est deja visite ou non 
+
+    memset(visit, 0 , sizeof(int) * g->nbsom);
+
+    // un tableau  pour les distances 
+    int distance[g->nbsom];
+    for(int i = 0 ; i < g->nbsom ; i++){
+        distance[i] = 0;
+    }
+
+    int sommet_prec[g->nbsom]; //on creer un tableau pour avoir le sommet precedent de chaque sommet
+    for(int i = 0 ; i < g->nbsom ; i++){
+        sommet_prec[i] = -1;
+    }
+
+    S_file *F  = (S_file*) malloc(sizeof(S_file));
+    Init_file(F);
+    visit[u-1] = 1;
+    distance[u-1] = 0; // verification pour etre sur
+    enfile(F,u);
+
+
+    while(!(estFileVide(F))){
+        int sommet_present = defile(F); 
+        /*if(sommet_present = v){
+            assert(distance[sommet_present -1] == distance[v-1]);
+            return distance[v-1];
+        }*/
+
+        Cellule_arete * cour = g->T_som[sommet_present -1]->L_voisin;
+        while (cour != NULL)
+        {
+            int sommet_voisin =  (sommet_present == cour->a->u) ?cour->a->v : cour->a->u;
+            if(visit[sommet_voisin -1] == 0){
+                visit[sommet_voisin -1] =  1 ;
+                enfile(F,sommet_voisin);
+                distance[sommet_voisin -1] = distance[sommet_present -1] +1;
+                sommet_prec[sommet_voisin - 1] = sommet_present;
+
+            }
+            cour = cour->suiv;
+        }
+        
+
+        
+    }
+
+    //initiation de la chaine
+    ListeEntier chaine; 
+    Init_Liste(&chaine);
+
+    if(sommet_prec[v-1] == -1){
+        return chaine; //le cas de non connexite
+    }
+
+
+    int tmp_v = v; 
+
+    while (tmp_v != u){
+        ajoute_en_tete(&chaine , tmp_v);
+        tmp_v = sommet_prec[tmp_v -1];
+    }
+
+    return chaine;
+}
+
+
+int reorganiseReseau(Reseau* r){
+    Graphe * g   = creerGraphe(r);
+    ListeEntier tab_commo[g->nbcommod];
+    
+    for(int i  = 0 ; i < g->nbcommod ; i++){
+        printf("la chaine la plus courte pour commodite d'extremite %d et %d  est : ", (g->T_commod)[i].e1, (g->T_commod)[i].e2);
+        ListeEntier chaine_commo = chaine_arborescence(g,g->T_commod[i].e1, g->T_commod[i].e2);
+        tab_commo[i] =chaine_commo;
+        printf(" [ ");
+        while(chaine_commo){
+            printf("%d  " , chaine_commo->u);
+            chaine_commo = chaine_commo->suiv;
+
+        }
+        printf(" ] \n");
+    }
+
+    
+
+    // on creer la matrice_sommet sommet du graph 
+    int matrice_cpt_arete[g->nbsom][g->nbsom];
+    for(int i = 0 ; i < g->nbsom ; i++ ){
+        for(int j = 0 ; j < g->nbcommod ; j++){
+            
+
+            matrice_cpt_arete[i][j] = 0 ;
+        }
+    }
+
+
+    //on parcours pour chaque arete
+
+    for(int k = 0 ; k < g->nbcommod ; k++){
+        ListeEntier chaine = tab_commo[k];
+        ListeEntier chaine_suivant = chaine->suiv;
+        while (chaine_suivant){
+            int u = chaine->u;
+            int v = chaine_suivant->u; 
+            matrice_cpt_arete[u-1][v-1] +=1;
+
+            chaine = chaine_suivant;
+            chaine_suivant = chaine_suivant->suiv;
+        } 
+    }       
+    
+    //verification avec de la matrice avec un parcours 
+    
+    for(int i = 0 ; i<  g->nbsom ; i++){
+        for(int j =0 ; j<g->nbsom ; j ++){
+            if(matrice_cpt_arete[i][j] >= g->gamma ){
+                return 0 ;// le cas ou c'est faux , avec le nombre de chaines qui passe par arete u,v >= gamma
+            }
+        }
+    }
+
+
+
+    return 1 ; // le cas ou c'est vrai avec le nombre de chaines qui passe par arete u,v < gamma
+
+}

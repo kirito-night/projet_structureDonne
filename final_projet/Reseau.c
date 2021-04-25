@@ -13,7 +13,7 @@ Noeud* rechercheCreeNoeudListe(Reseau *R, double x, double y)
     {
         if((temp_noeud->nd->x == x) && (temp_noeud->nd->y == y))
         {
-            printf("point dedans\n");
+            //printf("point dedans\n");
             return temp_noeud->nd;
         }        
         temp_noeud = temp_noeud->suiv;
@@ -28,7 +28,7 @@ Noeud* rechercheCreeNoeudListe(Reseau *R, double x, double y)
     new_cell->suiv = R->noeuds;
     R->noeuds = new_cell;
     R->nbNoeuds += 1;
-    printf("point n'est pas dedans \n");
+    //printf("point n'est pas dedans \n");
     return nouveau;
 
 
@@ -51,7 +51,7 @@ CellNoeud * insererNoeud(CellNoeud * liste_nd, Noeud *insere){
         liste_nd = new;
 
     }
-    printf("element est insere\n");
+    //printf("element est insere\n");
     return liste_nd; 
 }
 /*

@@ -44,7 +44,7 @@ Chaines* lectureChaines(FILE *f){
         int num;
         int nbPoints;
         fscanf(f,"%d %d ",&num,&nbPoints);
-        printf("%d %d \n",num,nbPoints);
+        //printf("%d %d \n",num,nbPoints);
         cha->numero = num;
         int i;
         CellPoint *liste_point = NULL;
