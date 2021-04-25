@@ -83,7 +83,7 @@ Graphe *creerGrapheTest(Reseau *r){
     return resG;
 }*/
 
-
+/*
 Graphe *creerGraphe(Reseau *r){
     Graphe *resG = (Graphe *)malloc(sizeof(Graphe));
     resG->gamma = r->gamma;
@@ -115,6 +115,75 @@ Graphe *creerGraphe(Reseau *r){
         l_noeud= l_noeud->suiv;
     }
 
+    CellCommodite *l_commo = r->commodites;
+    
+    int cpt_commod = 0;
+    while(l_commo ){ //on s'en occupe de la commodite
+        
+        
+
+        (resG->T_commod)[cpt_commod].e1 = l_commo->extrA;
+        (resG->T_commod)[cpt_commod].e2 = l_commo->extrB;
+
+        l_commo = l_commo->suiv;
+        cpt_commod +=1;
+
+
+    }
+
+
+
+    
+    return resG;
+}*/
+
+
+Graphe *creerGraphe(Reseau *r){
+    //initialisation du graph 
+    Graphe *resG = (Graphe *)malloc(sizeof(Graphe));
+    resG->gamma = r->gamma;
+    resG->nbsom = r->nbNoeuds;
+    resG->nbcommod = nbCommodites(r);
+    resG->T_som = (Sommet**) malloc(sizeof(Sommet*)*resG->nbsom);
+    memset(resG->T_som, 0,sizeof(Sommet*)*resG->nbsom );
+    resG->T_commod =(Commod *)malloc(sizeof(Commod) * resG->nbcommod);
+    
+    //initiation de tous les sommets avec leur coordonnes avec pour chaque sommet leur liste de voisin initier a NULL
+    CellNoeud *l_noeud = r->noeuds;
+    while(l_noeud){
+        (resG->T_som)[(l_noeud->nd->num) -1]  = InitieSommet(l_noeud->nd->num, l_noeud->nd->x,l_noeud->nd->y);
+        l_noeud= l_noeud->suiv;
+    }
+
+    //on remet l_noeud au debut de la liste de noeud, on refait un parcours pour inserer les listes voisins
+    l_noeud = r->noeuds;
+    while(l_noeud){
+        CellNoeud *liste_voisin = l_noeud->nd->voisins;
+        while(liste_voisin){
+            if(l_noeud->nd->num < liste_voisin->nd->num){ //on initie une arete que si u < v avec u = l_noeud->nd->num et v =  liste_voisin->nd->num
+                Arete * new_arete = (Arete*) malloc(sizeof(Arete));
+                new_arete->u = l_noeud->nd->num ;
+                new_arete->v = liste_voisin->nd->num;
+
+                Cellule_arete *cell1 = (Cellule_arete*)malloc(sizeof(Cellule_arete));
+                cell1->a = new_arete;
+                cell1->suiv = resG->T_som[(new_arete->u) -1]->L_voisin;
+                resG->T_som[new_arete->u]->L_voisin = cell1;
+
+
+                Cellule_arete *cell2 = (Cellule_arete*)malloc(sizeof(Cellule_arete));
+                cell2->a = new_arete;
+                cell2 ->suiv = resG->T_som[(new_arete->v) -1]->L_voisin;
+                resG->T_som[new_arete->v]->L_voisin = cell2;
+            }
+            liste_voisin = liste_voisin->suiv;
+        }
+        l_noeud = l_noeud->suiv;
+    }
+
+
+
+    
     CellCommodite *l_commo = r->commodites;
     
     int cpt_commod = 0;

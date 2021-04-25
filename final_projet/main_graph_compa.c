@@ -3,6 +3,8 @@
 #include<stdlib.h>
 #include<stdio.h>
 #define NB 5
+
+// pour les faire les graphes des differents fonction commentez et decommentez pour genererz les graphes avec GNUplot 
 int main(void){
 
     FILE *f = fopen("sortie_vitesse_hachage.txt", "w");  // Création du fichier 
@@ -12,7 +14,7 @@ int main(void){
     }
 
     int i = 500; // Nombre de chaines
-    while(i<=2500) //nous avons choisit 2500 pour les listes  car 5000 c'etait trop long pour l'execution ^^'
+    while(i<=5000) //nous avons choisit 2500 pour les listes  car 5000 c'etait trop long pour l'execution ^^'
     
     {
         Chaines* c =  generationAleatoire(i,100,5000,5000); // Création de la chaine de façon aléatoire
@@ -33,6 +35,7 @@ int main(void){
       */  
 
         // Temps de calcul pour la table de hachage
+
         // Faire varier la taille n de la table de hachage à la main (avec n ) car c'est pas un parametre pour le graph
         
 
