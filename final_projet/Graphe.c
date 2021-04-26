@@ -2,7 +2,8 @@
 #include <stdlib.h>
 #include "Struct_File.h"
 #include "Struct_Liste.h"
-
+#include<string.h>
+#include<stdio.h>
 
 Sommet* InitieSommet(int num , double x, double y){
     Sommet* res =  (Sommet *)malloc(sizeof(Sommet));
@@ -145,7 +146,8 @@ Graphe *creerGraphe(Reseau *r){
     resG->nbsom = r->nbNoeuds;
     resG->nbcommod = nbCommodites(r);
     resG->T_som = (Sommet**) malloc(sizeof(Sommet*)*resG->nbsom);
-    memset(resG->T_som, 0,sizeof(Sommet*)*resG->nbsom );
+    //memset(resG->T_som, 0,sizeof(Sommet*)*resG->nbsom );
+
     resG->T_commod =(Commod *)malloc(sizeof(Commod) * resG->nbcommod);
     
     //initiation de tous les sommets avec leur coordonnes avec pour chaque sommet leur liste de voisin initier a NULL
@@ -168,13 +170,18 @@ Graphe *creerGraphe(Reseau *r){
                 Cellule_arete *cell1 = (Cellule_arete*)malloc(sizeof(Cellule_arete));
                 cell1->a = new_arete;
                 cell1->suiv = resG->T_som[(new_arete->u) -1]->L_voisin;
-                resG->T_som[new_arete->u]->L_voisin = cell1;
+                resG->T_som[(new_arete->u) -1]->L_voisin = cell1;
+                // un test pour  le debuggage 
+                //printf(" ### num sommet : %d , num arete : %d ### \n", resG->T_som[(new_arete->u) -1]->num ,new_arete->u);
 
 
                 Cellule_arete *cell2 = (Cellule_arete*)malloc(sizeof(Cellule_arete));
                 cell2->a = new_arete;
                 cell2 ->suiv = resG->T_som[(new_arete->v) -1]->L_voisin;
-                resG->T_som[new_arete->v]->L_voisin = cell2;
+                resG->T_som[(new_arete->v) -1]->L_voisin = cell2;
+
+                //pour debuggage 
+                //printf(" ### num sommet : %d , num arete : %d ### \n", resG->T_som[(new_arete->v) -1] ->num,new_arete->v);
             }
             liste_voisin = liste_voisin->suiv;
         }
@@ -194,8 +201,8 @@ Graphe *creerGraphe(Reseau *r){
         new_commo->e2 = l_commo->extrB;
         (resG->T_commod)[resG->nbcommod] = *new_commo;*/
 
-        (resG->T_commod)[cpt_commod].e1 = l_commo->extrA;
-        (resG->T_commod)[cpt_commod].e2 = l_commo->extrB;
+        (resG->T_commod)[cpt_commod].e1 = l_commo->extrA->num;
+        (resG->T_commod)[cpt_commod].e2 = l_commo->extrB->num;
 
         l_commo = l_commo->suiv;
         cpt_commod +=1;
@@ -207,6 +214,30 @@ Graphe *creerGraphe(Reseau *r){
 
     
     return resG;
+}
+
+
+void afficher_graph(Graphe* g){
+    int i ;
+    for(i =  0  ; i < g->nbsom ; i++){
+        Sommet * som_present = g->T_som[i]; 
+        printf("sommet : %d  de liste voisin  : [" , som_present->num);
+        Cellule_arete * liste_voisin =  som_present->L_voisin;
+        while(liste_voisin){
+            printf("(%d , %d) " , liste_voisin->a->u , liste_voisin->a->v);
+            liste_voisin = liste_voisin->suiv;
+
+        }
+        printf("] \n");
+    }
+
+    Commod* tab_commod  =  g->T_commod; 
+    for(int j = 0 ; j < g->nbcommod ; j++){
+        printf("la est commodite du graph :(%d, %d ) \n ",tab_commod[j].e1, tab_commod[j].e2);
+    }
+
+    return ;
+
 }
 
 int plus_petit_nbChaine (Graphe* g, int u , int v){
@@ -233,8 +264,8 @@ int plus_petit_nbChaine (Graphe* g, int u , int v){
 
     while(!(estFileVide(F))){
         int sommet_present = defile(F); 
-        if(sommet_present = v){
-            assert(distance[sommet_present -1] == distance[v-1]); //mettre en commnetaire 
+        if(sommet_present == v){
+            //assert(distance[sommet_present -1] == distance[v-1]); //mettre en commnetaire 
             return distance[v-1];
         }
 
@@ -285,6 +316,7 @@ ListeEntier chaine_arborescence(Graphe * g, int u , int  v){
     Init_file(F);
     visit[u-1] = 1;
     distance[u-1] = 0; // verification pour etre sur
+    //sommet_prec[u-1] = -1;
     enfile(F,u);
 
 
@@ -328,34 +360,48 @@ ListeEntier chaine_arborescence(Graphe * g, int u , int  v){
         ajoute_en_tete(&chaine , tmp_v);
         tmp_v = sommet_prec[tmp_v -1];
     }
+    ajoute_en_tete(&chaine, u);
 
     return chaine;
 }
 
 
+
+
+
 int reorganiseReseau(Reseau* r){
     Graphe * g   = creerGraphe(r);
+    afficher_graph(g);
+    printf("###\n###\n###\n");
     ListeEntier tab_commo[g->nbcommod];
-    
+    putchar('\n');
     for(int i  = 0 ; i < g->nbcommod ; i++){
-        printf("la chaine la plus courte pour commodite d'extremite %d et %d  est : ", (g->T_commod)[i].e1, (g->T_commod)[i].e2);
+        printf("la chaine la plus courte pour commodite d'extremite %d et %d  est  de taille %d  est : ", (g->T_commod)[i].e1, (g->T_commod)[i].e2 , plus_petit_nbChaine(g,g->T_commod[i].e1, g->T_commod[i].e2));
         ListeEntier chaine_commo = chaine_arborescence(g,g->T_commod[i].e1, g->T_commod[i].e2);
+        
         tab_commo[i] =chaine_commo;
-        printf(" [ ");
+        printf(" [");
         while(chaine_commo){
-            printf("%d  " , chaine_commo->u);
+            printf("%d " , chaine_commo->u);
             chaine_commo = chaine_commo->suiv;
 
         }
-        printf(" ] \n");
+        printf("] \n");
     }
 
     
 
     // on creer la matrice_sommet sommet du graph 
-    int matrice_cpt_arete[g->nbsom][g->nbsom];
+    
+    
+    int ** matrice_cpt_arete = (int ** ) malloc(sizeof(int*) * g->nbsom);
+    for(int a = 0 ; a<g->nbsom ; a++){
+        matrice_cpt_arete[a] = (int*) malloc(sizeof(int) *g->nbsom);
+    }
+
+
     for(int i = 0 ; i < g->nbsom ; i++ ){
-        for(int j = 0 ; j < g->nbcommod ; j++){
+        for(int j = 0 ; j < g->nbsom ; j++){
             
 
             matrice_cpt_arete[i][j] = 0 ;
@@ -363,33 +409,67 @@ int reorganiseReseau(Reseau* r){
     }
 
 
+   
     //on parcours pour chaque arete
 
     for(int k = 0 ; k < g->nbcommod ; k++){
         ListeEntier chaine = tab_commo[k];
+        //printf("verif %d \n", chaine->u);
+
+        if(chaine ==NULL){
+            continue;
+        }
         ListeEntier chaine_suivant = chaine->suiv;
         while (chaine_suivant){
             int u = chaine->u;
             int v = chaine_suivant->u; 
             matrice_cpt_arete[u-1][v-1] +=1;
 
+            
+
             chaine = chaine_suivant;
             chaine_suivant = chaine_suivant->suiv;
         } 
     }       
     
+    afficher_matrice_2D(matrice_cpt_arete, g->nbsom); //affichage de la matrice, des 0 si il n'y pas d'arete
+
     //verification avec de la matrice avec un parcours 
-    
+    printf("###\ngamma : %d \n", g->gamma);
     for(int i = 0 ; i<  g->nbsom ; i++){
         for(int j =0 ; j<g->nbsom ; j ++){
+            //printf("le nombre de chaine passant par l'arete (%d ,%d) est de : %d \n",i+1, j+1 , matrice_cpt_arete[i][j]);
             if(matrice_cpt_arete[i][j] >= g->gamma ){
-                return 0 ;// le cas ou c'est faux , avec le nombre de chaines qui passe par arete u,v >= gamma
+                printf("faux , car pour l'arete (%d,%d), %d >= %d \n",i+1,j+1, matrice_cpt_arete[i][j] , g->gamma);
+                liberer_matrice_2D(matrice_cpt_arete,g->nbsom);
+                return 0 ;// le cas ou c'est faux , avec le nombre de chaines qui passe par arete u,v >= gamma (l'enoncee marquee inferieur a gamma donc mon code renvoie vrai que si c'est strictement inferieur a gamma)
             }
         }
     }
 
 
-
+    printf("vrai ! \n");
+    liberer_matrice_2D(matrice_cpt_arete,g->nbsom);
     return 1 ; // le cas ou c'est vrai avec le nombre de chaines qui passe par arete u,v < gamma
 
+}
+
+void afficher_matrice_2D(int **tab, int taille){
+    printf("###\n###\n###\n");
+    for(int i = 0 ; i < taille ; i++){
+        for(int j =0 ; j < taille ; j++){
+            printf("%d " , tab[i][j]);
+
+        }
+        putchar('\n');
+    }
+    printf("###\n###\n###\n");
+}
+
+void liberer_matrice_2D(int **tab, int taille){
+
+    for(int i = 0 ; i < taille ; i++){
+        free(tab[i]);
+    }
+    free(tab);
 }

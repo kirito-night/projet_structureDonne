@@ -43,4 +43,8 @@ ListeEntier chaine_arborescence(Graphe * g, int u , int  v);
 int reorganiseReseau(Reseau* r);
 
 
+void afficher_graph(Graphe* g);
+void afficher_matrice_2D(int **tab, int taille);
+
+void liberer_matrice_2D(int **tab, int taille);
 #endif

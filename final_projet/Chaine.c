@@ -26,7 +26,7 @@ Chaines* lectureChaines(FILE *f){
 
     Chaines *res = (Chaines *)malloc(sizeof(Chaines));
     char buffer[256];
-    char tmp[50]; //on s'en fou de lui 
+    char tmp[50]; // juste un tableau pour le stockage 
     int Nbchain;
     int Gamma;
     fgets(buffer, 256,f);
@@ -51,9 +51,10 @@ Chaines* lectureChaines(FILE *f){
         for(i = 0 ; i < nbPoints; i++){
             CellPoint *point = (CellPoint*)malloc(sizeof(CellPoint));
             float x, y;
-            int test = fscanf(f,"%f %f ",&x,&y);
-
-            printf("%f %f  %d \n",x,y , test);
+            //int test = fscanf(f,"%f %f ",&x,&y);
+            fscanf(f,"%f %f ",&x,&y);
+            //pour debug
+            //printf("%f %f  %d \n",x,y , test); 
             point->x=x;
             point->y = y;
             point->suiv = liste_point;

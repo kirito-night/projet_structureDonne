@@ -5,7 +5,9 @@
 #include"SVGwriter.h"
 #include "Hachage.h"
 #include"ArbreQuat.h"
-
+#include "Graphe.h"
+#include "Struct_File.h"
+#include "Struct_Liste.h"
 #define TAILLE 50
 
 void menu(){
@@ -14,7 +16,7 @@ void menu(){
     printf("entrez 3 pour la reconstitution de reseau par arbre quat\n");
 
 }
-/*
+
 int main(int argc , char *argv[]){
     
     FILE *f = fopen("00014_burma.cha","r");
@@ -32,18 +34,28 @@ int main(int argc , char *argv[]){
     Reseau* resABR  =reconstitueReseauArbre(c);
     afficheReseauSVG (resABR , "affchageReseauArbre");
     printf("le reseau est affiche\n");
-    FILE *fw = fopen("ReseauEcrite", "w");
+    
+    /*FILE *fw = fopen("ReseauEcrite", "w");
     
     ecrireReseau(resABR,fw);
-    fclose(fw);
+    fclose(fw);*/
     fclose(f);
+
+    int test = reorganiseReseau(resABR);
+    
+
+    /*if(test == 0){
+        printf("false\n");
+    }else{
+        printf("vrai");
+    }*/
 
     return 0;
 }
-*/
 
 
 
+/*
 int main(int argc , char *argv[]){
     menu();
     if(argc != 3 ){
@@ -99,6 +111,12 @@ int main(int argc , char *argv[]){
 
     }
 
+
+
+
     return 0;
 
+
+
 }
+*/

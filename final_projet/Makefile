@@ -1,4 +1,4 @@
-EX = ChainesMain ReconstitueReseau main_chiffre_compa main_graph_compa
+EX = ChainesMain ReconstitueReseau main_chiffre_compa main_graph_compa ReorganiseReseau
 CFLAGS = -g -Wall -Wextra -pedantic
 all : $(EX)
 
@@ -17,8 +17,8 @@ SVGwriter.o: SVGwriter.c
 ReconstitueReseau.o : ReconstitueReseau.c SVGwriter.o
 	gcc -c ReconstitueReseau.c $(CFLAGS)
 
-ReconstitueReseau : ReconstitueReseau.o Reseau.o SVGwriter.o
-	gcc SVGwriter.o Reseau.o Chaine.o ReconstitueReseau.o -o ReconstitueReseau $(CFLAGS) -lm
+ReconstitueReseau : ReconstitueReseau.o Reseau.o SVGwriter.o Graphe.o Struct_File.o Struct_Liste.o
+	gcc SVGwriter.o Reseau.o Chaine.o ReconstitueReseau.o Graphe.o Struct_File.o Struct_Liste.o -o ReconstitueReseau $(CFLAGS) -lm
 
 Reseau.o : Reseau.c SVGwriter.o 
 	gcc -c Reseau.c $(CFLAGS)
@@ -37,6 +37,24 @@ main_chiffre_compa : comparaison.o Chaine.o Reseau.o main_chiffre_compa.o SVGwri
 
 main_graph_compa : comparaison.o Chaine.o Reseau.o SVGwriter.o main_graph_compa.o
 	gcc main_graph_compa.o comparaison.o Chaine.o Reseau.o SVGwriter.o -o main_graph_compa  $(CFLAGS) -lm
+
+Struct_File.o : Struct_File.c
+	gcc -c Struct_File.c $(CFLAGS)
+
+Struct_Liste.o : Struct_Liste.c
+	gcc -c Struct_Liste.c $(CFLAGS)
+
+Graphe.o : Graphe.c Struct_File.o Struct_Liste.o
+	gcc -c Graphe.c $(CFLAGS)
+
+
+
+ReorganiseReseau.o : ReorganiseReseau.c 
+	gcc -c ReorganiseReseau.c $(CFLAGS)
+
+ReorganiseReseau : ReorganiseReseau.o   Reseau.o SVGwriter.o Graphe.o Struct_File.o Struct_Liste.o
+	gcc SVGwriter.o Reseau.o Chaine.o ReorganiseReseau.o Graphe.o Struct_File.o Struct_Liste.o -o ReorganiseReseau $(CFLAGS) -lm
+
 clean : 
 	rm  -f *.o $(EX)
 

@@ -37,10 +37,7 @@ Noeud* rechercheCreeNoeudListe(Reseau *R, double x, double y)
 CellNoeud * insererNoeud(CellNoeud * liste_nd, Noeud *insere){
     CellNoeud * tmp = liste_nd;
     while(tmp && tmp->nd != insere){
-        /*if(tmp->nd== insere){
-            printf("deja dans la liste\n");
-            return liste_nd;
-        }*/
+        
         tmp = tmp->suiv;
         
     }
