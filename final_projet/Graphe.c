@@ -370,7 +370,7 @@ ListeEntier chaine_arborescence(Graphe * g, int u , int  v){
 
 
 int reorganiseReseau(Reseau* r){
-    Graphe * g   = creerGraphe(r);
+    Graphe * g   = creerGraphe(r); //creation du graphe a partir d'un reseau 
     afficher_graph(g);
     printf("###\n###\n###\n");
     ListeEntier tab_commo[g->nbcommod];
@@ -455,6 +455,7 @@ int reorganiseReseau(Reseau* r){
 }
 
 void afficher_matrice_2D(int **tab, int taille){
+    //affichage de la matrice en pour compter le nombre de chaine passant par chaque arete
     printf("###\n###\n###\n");
     for(int i = 0 ; i < taille ; i++){
         for(int j =0 ; j < taille ; j++){
@@ -466,7 +467,7 @@ void afficher_matrice_2D(int **tab, int taille){
     printf("###\n###\n###\n");
 }
 
-void liberer_matrice_2D(int **tab, int taille){
+void liberer_matrice_2D(int **tab, int taille){//liberation de la matrice en 2D
 
     for(int i = 0 ; i < taille ; i++){
         free(tab[i]);

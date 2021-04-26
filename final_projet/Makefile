@@ -17,8 +17,8 @@ SVGwriter.o: SVGwriter.c
 ReconstitueReseau.o : ReconstitueReseau.c SVGwriter.o
 	gcc -c ReconstitueReseau.c $(CFLAGS)
 
-ReconstitueReseau : ReconstitueReseau.o Reseau.o SVGwriter.o Graphe.o Struct_File.o Struct_Liste.o
-	gcc SVGwriter.o Reseau.o Chaine.o ReconstitueReseau.o Graphe.o Struct_File.o Struct_Liste.o -o ReconstitueReseau $(CFLAGS) -lm
+ReconstitueReseau : ReconstitueReseau.o Reseau.o SVGwriter.o 
+	gcc SVGwriter.o Reseau.o Chaine.o ReconstitueReseau.o  -o ReconstitueReseau $(CFLAGS) -lm
 
 Reseau.o : Reseau.c SVGwriter.o 
 	gcc -c Reseau.c $(CFLAGS)
