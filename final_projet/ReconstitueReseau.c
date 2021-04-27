@@ -16,7 +16,7 @@ void menu(){
 }
 
 /*
-int main(int argc , char *argv[]){
+int main(int argc , char *argv[]){ //main pour debug 
     
     FILE *f = fopen("05000_USA-road-d-NY.cha","r");
     
@@ -57,20 +57,20 @@ int main(int argc , char *argv[]){
 
 int main(int argc , char *argv[]){
     menu();
-    if(argc != 3 ){
+    if(argc != 3 ){ //veifier si on a passer le nom du ficher.cha et le reconstitue le reseau de quel maniere avec un entier 
         printf("veuillez entrer le nom du fichier .cha et le un entier");
     }
 
-    char *nomfic = argv[1];
-    int rep = atoi(argv[2]);
-    FILE *f = fopen(nomfic,"r");
+    char *nomfic = argv[1]; //le nom du fichier passer en executable 
+    int rep = atoi(argv[2]); //comment executer 
+    FILE *f = fopen(nomfic,"r");//ouverture du fichier 
     if(f==NULL)
     {
         printf("Le fichier n'as pas pu être ouvert\n");
         exit(1);
     }
 
-    Chaines *c = lectureChaines(f);
+    Chaines *c = lectureChaines(f); //on lit la chaine 
 
     switch (rep)
     {
