@@ -40,3 +40,15 @@ int main(int argc , char *argv[]){
     }
 
 }
+
+
+//7.5
+
+/* pour ameliorer la performance de la fonction : 
+dans un premier temps on aura pu remplacer la matrice_2D par une autre structure de donnee comme un tableau de liste chainne qui contient pour chaque somme ses aretes 
+comme ca on evite les cas ou entre 2 sommet il n'existe pas d'arete
+
+La chaine la plus courte de chaque commodite ne sera pas renvoye par cette fonction elle est afficher mais pas 
+on peut  ecrire une fonction pour le faire ou bien de moidifier la signature en passant en argument  un  tableau de liste pour stocker less chaines plus courte 
+
+*/

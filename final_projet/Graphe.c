@@ -14,7 +14,7 @@ Sommet* InitieSommet(int num , double x, double y){
     return res;
 }
 
-
+//7.1
 Graphe *creerGraphe(Reseau *r){
     //initialisation du graph 
     Graphe *resG = (Graphe *)malloc(sizeof(Graphe));
@@ -112,7 +112,7 @@ void afficher_graph(Graphe* g){ //affichage du graph pour dubuggage
     return ;
 
 }
-
+//7.2
 int plus_petit_nbChaine (Graphe* g, int u , int v){
     if (u == v){
         return 0 ; // le chemin nulle 
@@ -176,6 +176,7 @@ void liberer_file(S_file* file){
   free(file);
 }
 
+//7.3
 
 ListeEntier chaine_arborescence(Graphe * g, int u , int  v){
      if (u == v){
@@ -252,7 +253,7 @@ ListeEntier chaine_arborescence(Graphe * g, int u , int  v){
 
 
 
-
+//7.4
 
 int reorganiseReseau(Reseau* r){
     Graphe * g   = creerGraphe(r); //creation du graphe a partir d'un reseau 

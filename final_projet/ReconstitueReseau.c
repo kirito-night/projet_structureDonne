@@ -112,7 +112,11 @@ int main(int argc , char *argv[]){
         break;
 
     }
+    FILE * fw_chaine = fopen("ecritureChaine.txt","w");
+    
+    ecrireChaines(c,fw_chaine);
 
+    fclose(fw_chaine);
     libererChaine(c);
 
 

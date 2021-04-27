@@ -6,7 +6,7 @@
 #include<math.h>
 #include"SVGwriter.h"
 
-void libererChaine(Chaines *c){ //fonction de liberation de la chaine 
+void libererChaine(Chaines *c){ //fonction de liberation de la chaine tout simple 
     CellChaine *tmp_chain = c->chaines;
     while(tmp_chain){
         CellPoint *tmp_pnt = tmp_chain->points;
@@ -38,7 +38,7 @@ Chaines* lectureChaines(FILE *f){
     res->nbChaines =Nbchain;
     res->gamma=Gamma;
     CellChaine *liste_cha = NULL;
-    for(int j =  0 ;  j < res->nbChaines ; j++){
+    for(int j =  0 ;  j < res->nbChaines ; j++){ //parcours du fichier 
         //fgets(buffer, 256,f);
         //printf("%s \n" , buffer);
         CellChaine *cha = (CellChaine *)malloc(sizeof(CellChaine));
