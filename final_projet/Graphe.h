@@ -4,7 +4,7 @@
 #include<stdio.h>
 #include "Reseau.h"
 #include "Struct_Liste.h"
-
+#include"Struct_File.h"
 typedef struct{
   int u,v;        /* Numeros des sommets extremité */
 } Arete;
@@ -47,4 +47,5 @@ void afficher_graph(Graphe* g);
 void afficher_matrice_2D(int **tab, int taille);
 
 void liberer_matrice_2D(int **tab, int taille);
+void liberer_file(S_file* file);
 #endif

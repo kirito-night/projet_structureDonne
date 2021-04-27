@@ -6,7 +6,7 @@
 #include "Hachage.h"
 #include"ArbreQuat.h"
 
-#define TAILLE 50
+#define TAILLE 10000 //pour la taille de la table d'Hachage on a pris un taille considerable pour que la fonction est vrai 
 
 void menu(){
     printf("entrez 1 pour la reconstitution de reseau par liste\n");
@@ -14,11 +14,11 @@ void menu(){
     printf("entrez 3 pour la reconstitution de reseau par arbre quat\n");
 
 }
-/*
 
+/*
 int main(int argc , char *argv[]){
     
-    FILE *f = fopen("00014_burma.cha","r");
+    FILE *f = fopen("05000_USA-road-d-NY.cha","r");
     
     //FILE *chaines = fopen("chainesEcrites.txt","w");
     if(f == NULL)
@@ -27,24 +27,32 @@ int main(int argc , char *argv[]){
         exit(2);
     }
 
-    Chaines* c = lectureChaines(f);
+    Chaines* c = lectureChaines(f); 
 
 
-    Reseau* resABR  =reconstitueReseauArbre(c);
-    afficheReseauSVG (resABR , "affchageReseauArbre");
-    printf("le reseau est affiche\n");
+    Reseau *resH = reconstitueReseauHachage(c, TAILLE);
+    afficheReseauSVG(resH, "affichageReseauHachage");
+    printf("reseau afficher, veuiller regarder le fichier html affchagereseauHachage\n");
+
+    FILE *fw_hachage = fopen("ReseauEcriteHachage", "w");
+    ecrireReseau(resH,fw_hachage);
+    fclose(fw_hachage);
     
+
+
+
+
  
     fclose(f);
 
-    int test = reorganiseReseau(resABR);
+    
     
 
    
     return 0;
 }
-*/
 
+*/
 
 
 int main(int argc , char *argv[]){
@@ -68,6 +76,8 @@ int main(int argc , char *argv[]){
     {
     case 1: ;
         Reseau *res = reconstitueReseauListe(c);
+
+        
         afficheReseauSVG(res,"affichagereseauListe");
         FILE *fw = fopen("ReseauEcriteliste", "w");
         ecrireReseau(res,fw);
@@ -76,13 +86,14 @@ int main(int argc , char *argv[]){
         printf("reseau afficher, veuiller regarder le fichier html affchagereseauListe\n");
         break;
     case 2 : ;
-        Reseau *resH = reconstitueReseauHachage(c, TAILLE);
+        Reseau *resH = reconstitueReseauHachage(c, comptePointsTotal(c));
         afficheReseauSVG(resH, "affichageReseauHachage");
-       
+        printf("reseau afficher, veuiller regarder le fichier html affchagereseauHachage\n");
+
         FILE *fw_hachage = fopen("ReseauEcriteHachage", "w");
         ecrireReseau(resH,fw_hachage);
         fclose(fw_hachage);
-        printf("reseau afficher, veuiller regarder le fichier html affchagereseauHachage\n");
+        
         break ;
     case 3 : ;
         Reseau* resABR  =reconstitueReseauArbre(c);
@@ -102,7 +113,7 @@ int main(int argc , char *argv[]){
 
     }
 
-
+    libererChaine(c);
 
 
     return 0;

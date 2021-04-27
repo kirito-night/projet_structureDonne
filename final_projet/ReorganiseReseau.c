@@ -30,6 +30,7 @@ int main(int argc , char *argv[]){
 
     Chaines *c = lectureChaines(f); 
     Reseau *res = reconstitueReseauArbre(c); //ici nous utilisons reconstitueReseauArbre car nous avons vue avec l'exo6 que c'est la maniere de reconstituer le reseau la plus rapide
+    libererChaine(c);
     int test = reorganiseReseau(res); //reorganisation du reseau qui va renvoye un vrai (1) ou faux(0)
 
     if(test ==0){

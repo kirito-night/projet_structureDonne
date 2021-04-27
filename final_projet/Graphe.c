@@ -266,6 +266,7 @@ int plus_petit_nbChaine (Graphe* g, int u , int v){
         int sommet_present = defile(F); 
         if(sommet_present == v){
             //assert(distance[sommet_present -1] == distance[v-1]); //mettre en commnetaire 
+            liberer_file(F);;
             return distance[v-1];
         }
 
@@ -285,9 +286,21 @@ int plus_petit_nbChaine (Graphe* g, int u , int v){
 
         
     }
+
+
+    liberer_file(F);
+
     
     return -1 ; // pas de chemin pour aller de u a v 
 
+}
+
+
+void liberer_file(S_file* file){
+  while(!estFileVide(file)){
+    defile(file);
+  }
+  free(file);
 }
 
 
@@ -362,6 +375,8 @@ ListeEntier chaine_arborescence(Graphe * g, int u , int  v){
     }
     ajoute_en_tete(&chaine, u);
 
+    liberer_file(F);
+
     return chaine;
 }
 
@@ -377,7 +392,7 @@ int reorganiseReseau(Reseau* r){
     putchar('\n');
     for(int i  = 0 ; i < g->nbcommod ; i++){
         printf("la chaine la plus courte pour commodite d'extremite %d et %d  est  de taille %d  est : ", (g->T_commod)[i].e1, (g->T_commod)[i].e2 , plus_petit_nbChaine(g,g->T_commod[i].e1, g->T_commod[i].e2));
-        ListeEntier chaine_commo = chaine_arborescence(g,g->T_commod[i].e1, g->T_commod[i].e2);
+        ListeEntier chaine_commo = chaine_arborescence(g,g->T_commod[i].e1, g->T_commod[i].e2); //calcule de la chaine la plus courte pour chaque commoodite 
         
         tab_commo[i] =chaine_commo;
         printf(" [");
@@ -438,7 +453,7 @@ int reorganiseReseau(Reseau* r){
     printf("###\ngamma : %d \n", g->gamma);
     for(int i = 0 ; i<  g->nbsom ; i++){
         for(int j =0 ; j<g->nbsom ; j ++){
-            //printf("le nombre de chaine passant par l'arete (%d ,%d) est de : %d \n",i+1, j+1 , matrice_cpt_arete[i][j]);
+            printf("le nombre de chaine passant par l'arete (%d ,%d) est de : %d \n",i+1, j+1 , matrice_cpt_arete[i][j]);
             if(matrice_cpt_arete[i][j] >= g->gamma ){
                 printf("faux , car pour l'arete (%d,%d), %d >= %d \n",i+1,j+1, matrice_cpt_arete[i][j] , g->gamma);
                 liberer_matrice_2D(matrice_cpt_arete,g->nbsom);
